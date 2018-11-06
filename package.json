@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/yargs": "^12.0.1",
     "yargs": "^12.0.2"
   }
 }
