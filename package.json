@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    
+    "server": "node dist/server.js",
     "test": "test"
   },
   "author": "",
