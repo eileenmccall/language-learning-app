@@ -1,14 +1,17 @@
 {
     "include": [
-        "src/**/*"
+        "./src/**/*"
     ],
     "exclude": [
         "node_modules",
         "**/*.spec.ts"
     ],
     "compilerOptions": {
-        "outDir": "dist",
+        "module": "commonjs",
+        "outDir": "./dist",
         "noUnusedLocals": true,
-        "noUnusedParameters": true
+        "noUnusedParameters": true,
+        "target": "es6",
+        "sourceMap": true
     }
 }
