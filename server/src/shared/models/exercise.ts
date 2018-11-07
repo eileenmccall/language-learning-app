@@ -5,4 +5,5 @@ export class Exercise {
     percentCorrect: number; // 0.88
     timesMissed: number;
     leech: boolean;
+    revisionAdjustment: number; // percentage by which to modify revision algorithm, based on time taken to answer and times missed
 }
