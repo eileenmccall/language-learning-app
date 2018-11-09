@@ -3,12 +3,10 @@ import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppComponent } from './app.component';
-import { WordsAddedComponent } from './words-added/words-added.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    WordsAddedComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
