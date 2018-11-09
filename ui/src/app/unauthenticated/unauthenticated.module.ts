@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { UnauthenticatedComponent } from './unauthenticated.component';
 import { HomeComponent } from './home/home.component';
 
 import { UnauthenticatedRoutes } from './unauthenticated.routing';
@@ -10,7 +9,6 @@ import { ForgotComponent } from './forgot/forgot.component';
 
 @NgModule({
     declarations: [
-        UnauthenticatedComponent,
         HomeComponent,
         LoginComponent,
         ForgotComponent
