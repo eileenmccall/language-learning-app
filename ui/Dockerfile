@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 COPY ./ui/package.json /usr/src/app
 
-RUN npm install -g @angular/cli@6.1.4
+RUN npm install -g @angular/cli@7.0.3
 RUN npm install
 
 COPY ./ui/angular.json /usr/src/app
