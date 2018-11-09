@@ -1,10 +1,14 @@
-version: '2'
+version: '3.7'
 
 services:
   angular:
-    build: ui
+    build:
+      context: .
+      dockerfile: ui/Dockerfile
+    volumes:
+      - ./ui/src:/usr/src/app/src
     ports:
-      - "4200:4200"
+      - 4200:4200
   
   express:
     build: server
