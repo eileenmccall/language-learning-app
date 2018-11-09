@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AppRoutingModule } from './shared/routing/routing.module';
 
 import { AppComponent } from './app.component';
 import { UnauthenticatedComponent } from './unauthenticated/unauthenticated.component';
@@ -14,7 +15,8 @@ import { HomeComponent } from './unauthenticated/home/home.component';
   ],
   imports: [
     BrowserModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
