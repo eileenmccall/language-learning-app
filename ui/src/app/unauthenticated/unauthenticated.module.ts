@@ -4,18 +4,21 @@ import { NgModule } from '@angular/core';
 import { UnauthenticatedComponent } from './unauthenticated.component';
 import { HomeComponent } from './home/home.component';
 
-import { routes } from './unauthenticated.routing';
-import { RouterModule } from '@angular/router';
+import { UnauthenticatedRoutes } from './unauthenticated.routing';
+import { LoginComponent } from './login/login.component';
+import { ForgotComponent } from './forgot/forgot.component';
 
 @NgModule({
     declarations: [
         UnauthenticatedComponent,
-        HomeComponent
+        HomeComponent,
+        LoginComponent,
+        ForgotComponent
     ],
     imports: [
         BrowserModule,
-        RouterModule.forChild(routes)
+        UnauthenticatedRoutes
     ],
     providers: []
 })
-export class AppModule { }
+export class UnauthenticatedModule { }

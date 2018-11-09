@@ -1,22 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AppRoutingModule } from './shared/routing/routing.module';
+
+import { AppRoutes } from './app.routing';
 
 import { AppComponent } from './app.component';
-import { UnauthenticatedComponent } from './unauthenticated/unauthenticated.component';
-import { HomeComponent } from './unauthenticated/home/home.component';
+import { UnauthenticatedModule } from './unauthenticated/unauthenticated.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    UnauthenticatedComponent,
-    HomeComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     FontAwesomeModule,
-    AppRoutingModule
+    UnauthenticatedModule,
+    AppRoutes
   ],
   providers: [],
   bootstrap: [AppComponent]

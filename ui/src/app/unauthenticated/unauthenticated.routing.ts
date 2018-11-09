@@ -1,11 +1,23 @@
+
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { ForgotComponent } from './forgot/forgot.component';
 
-export const routes: Routes = [
+const unauthenticatedRoutes: Routes = [
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
-    { path: 'login', component: LoginComponent},
-    { path: 'forgot', component: ForgotComponent},
-    { path: '', component: HomeComponent, pathMatch: 'full'}
+    { path: 'login', component: LoginComponent },
+    { path: 'forgot', component: ForgotComponent }
 ];
+
+@NgModule({
+    imports: [
+        RouterModule.forChild(unauthenticatedRoutes)
+    ],
+    exports: [
+        RouterModule
+    ]
+})
+export class UnauthenticatedRoutes { }

@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { UnauthenticatedComponent } from 'src/app/unauthenticated/unauthenticated.component';
-
 const appRoutes: Routes = [
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    {
+        path: '',
+        loadChildren: './unauthenticated/unauthenticated.module#UnauthenticatedModule'
+    }
     // { path: '', redirectTo: '/', pathMatch: 'full' },
     // { path: '**', component: PageNotFoundComponent }
 ];
@@ -20,4 +21,4 @@ const appRoutes: Routes = [
         RouterModule
     ]
 })
-export class AppRoutingModule { }
+export class AppRoutes { }
