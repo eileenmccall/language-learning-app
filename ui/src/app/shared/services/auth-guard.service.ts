@@ -13,7 +13,6 @@ export class AuthGuardService implements CanActivate {
         // }
 
         const bool = false;
-        console.log(state.url);
 
         if (bool) {
             return bool;

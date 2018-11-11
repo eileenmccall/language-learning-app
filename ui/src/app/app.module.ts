@@ -8,10 +8,12 @@ import { AppRoutes } from './app.routing';
 
 import { AppComponent } from './app.component';
 import { AuthGuardService } from './shared/services/auth-guard.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

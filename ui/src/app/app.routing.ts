@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from './shared/services/auth-guard.service';
 import { AuthenticatedModule } from './authenticated/authenticated.module';
 import { UnauthenticatedModule } from './unauthenticated/unauthenticated.module';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [
     {
@@ -12,6 +13,9 @@ const appRoutes: Routes = [
         path: '',
         canActivate: [AuthGuardService],
         loadChildren: () => AuthenticatedModule
+    }, {
+        path: '**',
+        component: PageNotFoundComponent
     }
 ];
 
