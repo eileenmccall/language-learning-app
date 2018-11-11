@@ -11,18 +11,10 @@ export class AuthGuardService implements CanActivate {
         //     this.router.navigate(['login']);
         //     return false;
         // }
-
-        const bool = false;
-
-        if (bool) {
-            return bool;
-        } else {
-            if (state.url === '') {
-                this.router.navigate(['home']);
-            } else {
-                this.router.navigate(['login']);
-            }
-            return false;
+        const isAuthenticated = true;
+        if (!isAuthenticated) {
+            this.router.navigate(['login']);
         }
+        return isAuthenticated ? true : false;
     }
 }

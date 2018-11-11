@@ -7,12 +7,12 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 const appRoutes: Routes = [
     {
-        path: '',
-        loadChildren: () => UnauthenticatedModule
-    }, {
-        path: '',
+        path: 'app',
         canActivate: [AuthGuardService],
         loadChildren: () => AuthenticatedModule
+    }, {
+        path: '',
+        loadChildren: () => UnauthenticatedModule
     }, {
         path: '**',
         component: PageNotFoundComponent
