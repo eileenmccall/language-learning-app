@@ -7,7 +7,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppRoutes } from './app.routing';
 
 import { AppComponent } from './app.component';
-import { UnauthenticatedModule } from './unauthenticated/unauthenticated.module';
+import { AuthGuardService } from './shared/services/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -17,10 +17,9 @@ import { UnauthenticatedModule } from './unauthenticated/unauthenticated.module'
     BrowserModule,
     FlexLayoutModule,
     FontAwesomeModule,
-    UnauthenticatedModule,
     AppRoutes
   ],
-  providers: [],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
