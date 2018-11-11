@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-<<<<<<< HEAD
-=======
 import { Article } from './models/article';
->>>>>>> added articles
 
 @Component({
   selector: 'app-articles',
@@ -13,8 +10,6 @@ export class ArticlesComponent implements OnInit {
 
   constructor() { }
 
-<<<<<<< HEAD
-=======
   public articles: Array<Article> = [
     {
       id: 1,
@@ -43,7 +38,6 @@ export class ArticlesComponent implements OnInit {
     }
   ];
 
->>>>>>> added articles
   ngOnInit() {
   }
 
