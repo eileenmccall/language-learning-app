@@ -10,8 +10,10 @@ const appRoutes: Routes = [
         path: 'app',
         canActivate: [AuthGuardService],
         loadChildren: () => AuthenticatedModule
+        // loadChildren: './authenticated/authenticated.module#AuthenticatedModule'
     }, {
         path: '',
+        // loadChildren: './unauthenticated/unauthenticated.module#UnauthenticatedModule'
         loadChildren: () => UnauthenticatedModule
     }, {
         path: '**',
