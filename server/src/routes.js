@@ -53,10 +53,9 @@ app.get("/articles", (req, res, next) => {
 });
 
 app.delete("/articles/:id", (req, res, next) => {
-    const articleToDelete = Article.find({_id: req.params.id});
     Article.deleteOne({ _id: req.params.id }).then(result => {
         console.log(result);
-        res.status(200).json(articleToDelete);
+        res.status(200).json(req.params.id);
     });
 });
 

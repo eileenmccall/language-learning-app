@@ -21,4 +21,10 @@ export class ArticleListComponent implements OnInit {
   private getArticles (): void {
     this.articles = this.articlesService.getArticles$();
   }
+
+  onDelete(event: Article) {
+    this.articlesService.deleteArticle$(event._id).subscribe(() => {
+      this.getArticles();
+    });
+  }
 }
