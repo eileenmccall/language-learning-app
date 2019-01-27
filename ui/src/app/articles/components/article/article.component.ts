@@ -9,11 +9,16 @@ import { Article } from '../../models/article';
 export class ArticleComponent implements OnInit {
 
   @Input() article: Article;
+  @Output() edit = new EventEmitter<Article>();
   @Output() delete = new EventEmitter<Article>();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  editArticle() {
+    this.edit.emit(this.article);
   }
 
   deleteArticle() {
