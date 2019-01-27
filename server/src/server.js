@@ -1,47 +1,52 @@
-const express = require('express')
-const mongoose = require('mongoose');
+const app = require("./routes");
+const debug = require("debug")("node-angular");
+const http = require("http");
 
-const app = express()
-const port = 3000
-const db = 'mongodb://database/starter';
+const normalizePort = val => {
+    var port = parseInt(val, 10);
 
-// const controllers = require('./api/controllers/controllers');
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
 
-mongoose.connect(db);
-mongoose.set("debug", true);
+    if (port >= 0) {
+        // port number
+        return port;
+    }
 
-const ArticleSchema = new mongoose.Schema({
-    title: String,
-    imageUrl: String,
-    excerpt: String,
-    body: String
-}, { collection: 'articles'});
+    return false;
+};
 
-const Article = mongoose.model('Article', ArticleSchema);
+const onError = error => {
+    if (error.syscall !== "listen") {
+        throw error;
+    }
+    const bind = typeof addr === "string" ? "pipe " + addr : "port " + port;
+    switch (error.code) {
+        case "EACCES":
+            console.error(bind + " requires elevated privileges");
+            process.exit(1);
+            break;
+        case "EADDRINUSE":
+            console.error(bind + " is already in use");
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+};
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-        'Access-Control-Allow-Header',
-        'Origin, X-Requested-With, Content-Type, Accept'
-    );
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET, POST, PATCH, DELETE, PUT, OPTIONS'
-    )
-    next();
-})
+const onListening = () => {
+    const addr = server.address();
+    const bind = typeof addr === "string" ? "pipe " + addr : "port " + port;
+    debug("Listening on " + bind);
+};
 
-app.get('/', (req, res) => res.send('Hello World!'));
+const port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
 
-app.get('/articles', (req, res) => {
-    // res.send(controllers.articlesController.get());
-
-    Article.find()
-        .then(documents => {
-            console.log(documents);
-            res.status(200).json(documents);
-        });
-});
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+const server = http.createServer(app);
+server.on("error", onError);
+server.on("listening", onListening);
+server.listen(port);
