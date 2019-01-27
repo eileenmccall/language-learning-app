@@ -3,6 +3,19 @@ const app = express()
 const port = 3000
 const controllers = require('./api/controllers/controllers');
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+        'Access-Control-Allow-Header',
+        'Origin, X-Requested-With, Content-Type, Accept'
+    );
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PATCH, DELETE, PUT, OPTIONS'
+    )
+    next();
+})
+
 app.get('/', (req, res) => res.send('Hello World!'));
 
 app.get('/articles', (req, res) => {
