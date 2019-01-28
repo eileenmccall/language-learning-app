@@ -2,12 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
-
-import { AppRoutes } from './app.routing';
-
 import { AppComponent } from './app.component';
-import { UnauthenticatedModule } from './unauthenticated/unauthenticated.module';
+import { AuthGuardService } from './routing/guards/auth-guard.service';
+import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
+import { RoutingModule } from './routing/routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,12 +14,12 @@ import { UnauthenticatedModule } from './unauthenticated/unauthenticated.module'
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     FlexLayoutModule,
     FontAwesomeModule,
-    UnauthenticatedModule,
-    AppRoutes
+    RoutingModule
   ],
-  providers: [],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

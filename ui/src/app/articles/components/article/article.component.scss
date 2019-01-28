@@ -1,0 +1,13 @@
+.card-img-top {
+  height: 180px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-around;
+
+  button {
+    min-width: 100px;
+  }
+}
+
