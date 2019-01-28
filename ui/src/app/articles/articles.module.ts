@@ -14,6 +14,7 @@ import { AddArticleModalComponent } from './components/add-article-modal/add-art
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditArticleModalComponent } from './components/edit-article-modal/edit-article-modal.component';
+import { SharedModule } from '@app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { EditArticleModalComponent } from './components/edit-article-modal/edit-
     ReactiveFormsModule,
     NgbModule,
     LayoutModule,
+    SharedModule,
     ArticlesRoutes
   ],
   providers: [
