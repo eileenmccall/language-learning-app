@@ -14,8 +14,16 @@ services:
     build: server
     ports:
       - "3000:3000"
+    links:
+      - database
+
+  mongo-seed:
+    build: ./mongo-seed
+    links:
+      - database
 
   database:
     image: mongo
     ports:
       - "27017:27017"
+  
