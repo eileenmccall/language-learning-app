@@ -45,7 +45,9 @@ export class ArticleListComponent implements OnInit {
   }
 
   addArticle(article: Article): void {
-    this.articlesService.addArticle$(article);
+    this.articlesService.addArticle$(article).subscribe(() => {
+      this.getArticles();
+    });
   }
 
   onEdit(article: Article): void {

@@ -33,6 +33,8 @@ export class EditArticleModalComponent implements OnInit {
   }
 
   save(): void {
-    this.modal.close(this.form.value as Article);
+    const article = this.form.value;
+    article._id = this.article._id;
+    this.modal.close(article);
   }
 }

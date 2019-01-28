@@ -29,7 +29,7 @@ app.use((req, res, next) => {
     );
     res.setHeader(
         "Access-Control-Allow-Methods",
-        "GET, POST, PATCH, DELETE, OPTIONS"
+        "GET, POST, PUT, PATCH, DELETE, OPTIONS"
     );
     next();
 });
@@ -50,6 +50,13 @@ app.get("/articles", (req, res, next) => {
     Article.find().then(documents => {
         res.status(200).json(documents);
     });
+});
+
+app.put('/articles/:id', (req, res, rext) => {
+    Article.findByIdAndUpdate(req.params.id, req.body)
+        .then((document) => {
+            res.status(201).json(document);
+        });
 });
 
 app.delete("/articles/:id", (req, res, next) => {
