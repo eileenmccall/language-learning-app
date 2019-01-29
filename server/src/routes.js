@@ -1,10 +1,29 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const multer = require("multer");
 
 const Article = require("./models/article.model");
 
+const MIME_TYPE_MAP = {
+    'image/jpg': 'jpg',
+    'image/jpeg': 'jpg',
+    'image/png': 'png'
+};
+
 const app = express();
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const isValidMimeType = MIME_TYPE_MAP[file.mimetype];
+        error = isValidMimeType ? null : 'Invalid mime type';
+        cb(null, "../public/images");
+    },
+    filename: (req, file, callback) => {
+        const name = file.originalname.toLowerCase().split(' ').join('-');
+        const extension = MIME_TYPE_MAP[file.mimetype];
+        callback(null, name + '-' + Date.now() + '.' + extension);
+    }
+})
 
 mongoose
     .connect(
@@ -52,7 +71,7 @@ app.get("/articles", (req, res, next) => {
     });
 });
 
-app.put('/articles/:id', (req, res, rext) => {
+app.put('/articles/:id', multer(storage).single('image'), (req, res, rext) => {
     Article.findByIdAndUpdate(req.params.id, req.body)
         .then((document) => {
             res.status(201).json(document);
