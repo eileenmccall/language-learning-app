@@ -10,7 +10,6 @@ import { LayoutModule } from '../layout/layout.module';
 // Routes
 import { ArticlesRoutes } from './articles.routing';
 import { ArticlesService } from './services/articles.service';
-import { AddArticleModalComponent } from './components/add-article-modal/add-article-modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditArticleModalComponent } from './components/edit-article-modal/edit-article-modal.component';
@@ -20,11 +19,9 @@ import { SharedModule } from '@app/shared/shared.module';
   declarations: [
     ArticleComponent,
     ArticleListComponent,
-    AddArticleModalComponent,
     EditArticleModalComponent
   ],
   entryComponents: [
-    AddArticleModalComponent,
     EditArticleModalComponent
   ],
   imports: [

@@ -2,12 +2,12 @@
 <div class="container">
   <div class="row mb-3">
     <div class="col-12">
-      <button class="btn btn-primary" (click)="openAddArticleModal()">Add Article</button>
+      <button class="btn btn-primary" (click)="openModal()">Add Article</button>
     </div>
   </div>
   <div class="row">
     <div class="col-12 col-md-6 col-lg-4" *ngFor="let article of articles | async">
-      <app-article [article]="article" (edit)="onEdit($event)" (delete)="onDelete($event)"></app-article>
+      <app-article [article]="article" (edit)="openModal($event)" (delete)="onDelete($event)"></app-article>
     </div>
   </div>
 </div>

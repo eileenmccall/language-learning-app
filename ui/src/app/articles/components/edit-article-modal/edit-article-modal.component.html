@@ -5,7 +5,7 @@
   </button>
 </div>
 <div class="modal-body">
-  <div class="file-preview" *ngIf="filePreview && filePreview !== '' && form.get('image').valid">
+  <div class="file-preview" *ngIf="filePreview && filePreview !== ''">
     <img [src]="filePreview" [alt]="form.value.title">
   </div>
   <form [formGroup]="form">
