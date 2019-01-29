@@ -6,8 +6,6 @@ const multer = require("multer");
 
 const Article = require("./models/article.model");
 
-console.log(process.cwd());
-
 const MIME_TYPE_MAP = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
@@ -86,7 +84,6 @@ app.put('/articles/:id', (req, res, rext) => {
 
 app.delete("/articles/:id", (req, res, next) => {
     Article.deleteOne({ _id: req.params.id }).then(result => {
-        console.log(result);
         res.status(200).json(req.params.id);
     });
 });
