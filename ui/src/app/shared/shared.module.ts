@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { FileUploadService } from './services/file-upload.service';
 
 @NgModule({
   imports: [
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
   exports: [
     PageNotFoundComponent
@@ -12,6 +15,8 @@ import { RouterModule } from '@angular/router';
   declarations: [
     PageNotFoundComponent
   ],
-  providers: [],
+  providers: [
+    FileUploadService
+  ],
 })
 export class SharedModule { }
