@@ -11,7 +11,10 @@ services:
       - 4200:4200
   
   express:
-    build: server
+    build: ./server
+    command: nodemon server.js
+    volumes:
+      - ./server/src:/usr/src/app/src
     ports:
       - "3000:3000"
     links:
