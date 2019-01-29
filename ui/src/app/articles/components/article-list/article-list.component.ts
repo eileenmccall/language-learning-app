@@ -6,6 +6,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EditArticleModalComponent } from '../edit-article-modal/edit-article-modal.component';
 import { ModalResult } from '@app/articles/models/modal-result.model';
 import { FileUploadService } from '@app/shared/services/file-upload.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-article-list',
@@ -17,17 +18,18 @@ export class ArticleListComponent implements OnInit {
   constructor (
     private articlesService: ArticlesService,
     private modalService: NgbModal,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
+    private route: ActivatedRoute
   ) { }
 
-  public articles: Observable<Array<Article>>;
+  public articles: Array<Article>;
 
   ngOnInit () {
-    this.getArticles();
+    this.articles = this.route.snapshot.data['articles'];
   }
 
   private getArticles (): void {
-    this.articles = this.articlesService.getArticles$();
+    this.articlesService.getArticles$().subscribe(articles => this.articles = articles);
   }
 
   addArticle(article: Article): void {

@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditArticleModalComponent } from './components/edit-article-modal/edit-article-modal.component';
 import { SharedModule } from '@app/shared/shared.module';
+import { ArticlesResolver } from './resolvers/articles.resolver';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { SharedModule } from '@app/shared/shared.module';
     ArticlesRoutes
   ],
   providers: [
-    ArticlesService
+    ArticlesService,
+    ArticlesResolver
   ]
 })
 export class ArticlesModule { }

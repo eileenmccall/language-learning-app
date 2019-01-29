@@ -4,11 +4,15 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Components
 import { ArticleListComponent } from './components/article-list/article-list.component';
+import { ArticlesResolver } from './resolvers/articles.resolver';
 
 const articlesRoutes: Routes = [
   {
     path: '',
-    component: ArticleListComponent
+    component: ArticleListComponent,
+    resolve: {
+      articles: ArticlesResolver
+    }
   }
 ];
 
