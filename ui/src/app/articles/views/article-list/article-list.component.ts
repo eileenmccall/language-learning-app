@@ -3,7 +3,7 @@ import { Article } from '../../models/article';
 import { Observable } from 'rxjs';
 import { ArticlesService } from '../../services/articles.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EditArticleModalComponent } from '../edit-article-modal/edit-article-modal.component';
+import { EditArticleModalComponent } from '../../components/edit-article-modal/edit-article-modal.component';
 import { ModalResult } from '@app/articles/models/modal-result.model';
 import { FileUploadService } from '@app/shared/services/file-upload.service';
 import { ActivatedRoute } from '@angular/router';
@@ -14,22 +14,23 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./article-list.component.scss']
 })
 export class ArticleListComponent implements OnInit {
-
-  constructor (
+  constructor(
     private articlesService: ArticlesService,
     private modalService: NgbModal,
     private fileUploadService: FileUploadService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   public articles: Array<Article>;
 
-  ngOnInit () {
+  ngOnInit() {
     this.articles = this.route.snapshot.data['articles'];
   }
 
-  private getArticles (): void {
-    this.articlesService.getArticles$().subscribe(articles => this.articles = articles);
+  private getArticles(): void {
+    this.articlesService
+      .getArticles$()
+      .subscribe(articles => (this.articles = articles));
   }
 
   addArticle(article: Article): void {
@@ -46,34 +47,39 @@ export class ArticleListComponent implements OnInit {
 
     modalRef.componentInstance.article = article;
 
-    modalRef.result.then((result: ModalResult | null) => {
-      if (result && result.file) {
-        this.fileUploadService.uploadFile$(result.title, result.file).subscribe((fileUrl) => {
-          if (fileUrl && article) {
-            this.editArticle({
-              ...result,
-              imageUrl: fileUrl
-            } as Article);
-          } else if (fileUrl) {
-            this.addArticle({
-              ...result,
-              imageUrl: fileUrl
-            } as Article);
+    modalRef.result.then(
+      (result: ModalResult | null) => {
+        if (result && result.file) {
+          this.fileUploadService
+            .uploadFile$(result.title, result.file)
+            .subscribe(fileUrl => {
+              if (fileUrl && article) {
+                this.editArticle({
+                  ...result,
+                  imageUrl: fileUrl
+                } as Article);
+              } else if (fileUrl) {
+                this.addArticle({
+                  ...result,
+                  imageUrl: fileUrl
+                } as Article);
+              }
+            });
+        } else if (result) {
+          if (article) {
+            this.editArticle(result as Article);
+          } else {
+            this.addArticle(result as Article);
           }
-        });
-      } else if (result) {
-        if (article) {
-          this.editArticle(result as Article);
-        } else {
-          this.addArticle(result as Article);
         }
+      },
+      (result: any) => {
+        console.log(result);
       }
-    }, (result: any) => {
-      console.log(result);
-    });
+    );
   }
 
-  editArticle (article: Article): void {
+  editArticle(article: Article): void {
     this.articlesService.editArticle$(article).subscribe(() => {
       this.getArticles();
     });

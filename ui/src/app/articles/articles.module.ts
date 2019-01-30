@@ -4,17 +4,17 @@ import { CommonModule } from '@angular/common';
 
 // Component
 import { ArticleComponent } from './components/article/article.component';
-import { ArticleListComponent } from './components/article-list/article-list.component';
+import { ArticleListComponent } from './views/article-list/article-list.component';
 import { LayoutModule } from '../layout/layout.module';
 
 // Routes
-import { ArticlesRoutes } from './articles.routing';
+import { ArticlesRoutes } from './routing/articles.routing';
 import { ArticlesService } from './services/articles.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditArticleModalComponent } from './components/edit-article-modal/edit-article-modal.component';
 import { SharedModule } from '@app/shared/shared.module';
-import { ArticlesResolver } from './resolvers/articles.resolver';
+import { ArticlesResolver } from './routing/resolvers/articles.resolver';
 
 @NgModule({
   declarations: [
@@ -22,9 +22,7 @@ import { ArticlesResolver } from './resolvers/articles.resolver';
     ArticleListComponent,
     EditArticleModalComponent
   ],
-  entryComponents: [
-    EditArticleModalComponent
-  ],
+  entryComponents: [EditArticleModalComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -33,9 +31,6 @@ import { ArticlesResolver } from './resolvers/articles.resolver';
     SharedModule,
     ArticlesRoutes
   ],
-  providers: [
-    ArticlesService,
-    ArticlesResolver
-  ]
+  providers: [ArticlesService, ArticlesResolver]
 })
-export class ArticlesModule { }
+export class ArticlesModule {}

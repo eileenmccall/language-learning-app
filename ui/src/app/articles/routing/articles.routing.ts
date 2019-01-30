@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // Components
-import { ArticleListComponent } from './components/article-list/article-list.component';
+import { ArticleListComponent } from '../views/article-list/article-list.component';
 import { ArticlesResolver } from './resolvers/articles.resolver';
 
 const articlesRoutes: Routes = [
@@ -17,11 +17,7 @@ const articlesRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(articlesRoutes)
-  ],
-  exports: [
-      RouterModule
-  ]
+  imports: [RouterModule.forChild(articlesRoutes)],
+  exports: [RouterModule]
 })
-export class ArticlesRoutes { }
+export class ArticlesRoutes {}
