@@ -1,6 +1,8 @@
-// import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { AuthCredentials } from '../models/auth-credentials.model';
+import { User } from '../models/user.model';
 
 // import { Observable } from 'rxjs';
 // import { first, map, tap } from 'rxjs/operators';
@@ -11,111 +13,87 @@
 // import { User } from '@app/shared/models/user.model';
 // import { StateService } from './state.service';
 
-// interface IdentityError {
-//   code: string;
-//   description: string;
-// }
+@Injectable()
+export class AuthenticationService {
+  constructor(
+    // private http: HttpClient,
+    // private router: Router,
+    // private cookieService: CookieService,
+    // private stateService: StateService
+  ) { }
 
-// interface IdentityResult {
-//   errors: IdentityError[];
-//   succeeded: boolean;
-// }
+  login$(): void {}
 
-// interface PasswordResetRequest {
-//   oldPassword: string;
-//   newPassword: string;
-//   confirmPassword: string;
-// }
+  // login$(authCredentials: AuthCredentials): Observable<User> {
+  //   return this.http.post<User>(environment.localApiUrl + '/Auth/login', authCredentials)
+  //     .pipe(first())
+  //     .pipe(tap(() => { this.stateService.reset(); }))
+  //     .pipe(map(user => {
+  //       // login successful if there's a jwt token in the response
+  //       if (user && user.token) {
+  //         // store user details and jwt token in local storage to keep user logged in between page refreshes
+  //         this.cookieService.set('token', user.token);
+  //         localStorage.setItem('currentUser', JSON.stringify(user));
+  //       }
+  //       return user;
+  //     }));
+  // }
 
-// interface ForgotPasswordRequest {
-//   email: string;
-// }
+  // logout(): void {
+  //   // remove user from local storage to log user out
+  //   localStorage.removeItem('currentUser');
+  //   this.router.navigate(['/login']);
+  // }
 
-// interface ResetForgottenPasswordRequest {
-//   token: string;
-//   password: string;
-//   confirmPassword: string;
-// }
+  // forgotPasswordRequest$(email: ForgotPasswordRequest): Observable<any> {
+  //   return this.http.post<any>(environment.localApiUrl + '/Auth/forgotPasswordRequest', email)
+  //     .pipe(first());
+  // }
 
-// @Injectable()
-// export class AuthenticationService {
-//   constructor(
-//     private http: HttpClient,
-//     private router: Router,
-//     private cookieService: CookieService,
-//     private stateService: StateService
-//   ) { }
+  // resetPassword(request: PasswordResetRequest): Observable<IdentityResult> {
+  //   return this.http.post<IdentityResult>(environment.localApiUrl + '/Auth/resetPassword', request)
+  //     .pipe(first());
+  // }
 
-//   login$(authCredentials: AuthCredentials): Observable<User> {
-//     return this.http.post<User>(environment.localApiUrl + '/Auth/login', authCredentials)
-//       .pipe(first())
-//       .pipe(tap(() => { this.stateService.reset(); }))
-//       .pipe(map(user => {
-//         // login successful if there's a jwt token in the response
-//         if (user && user.token) {
-//           // store user details and jwt token in local storage to keep user logged in between page refreshes
-//           this.cookieService.set('token', user.token);
-//           localStorage.setItem('currentUser', JSON.stringify(user));
-//         }
-//         return user;
-//       }));
-//   }
+  // resetPasswordWithToken(request: ResetForgottenPasswordRequest): Observable<IdentityResult> {
+  //   return this.http.post<IdentityResult>(environment.localApiUrl + '/Auth/resetForgottenPassword', request)
+  //     .pipe(first());
+  // }
 
-//   logout(): void {
-//     // remove user from local storage to log user out
-//     localStorage.removeItem('currentUser');
-//     this.router.navigate(['/login']);
-//   }
+  // MOCKED SERVICE CALLS
 
-//   forgotPasswordRequest$(email: ForgotPasswordRequest): Observable<any> {
-//     return this.http.post<any>(environment.localApiUrl + '/Auth/forgotPasswordRequest', email)
-//       .pipe(first());
-//   }
+  // mockLogin$(credentials: AuthCredentials): Observable<any> {
+  //   return new Observable((observer) => {
+  //     setTimeout(() => {
+  //       console.log(credentials);
+  //       observer.next();
+  //       observer.complete();
+  //     }, 1000);
+  //   });
+  // }
 
-//   resetPassword(request: PasswordResetRequest): Observable<IdentityResult> {
-//     return this.http.post<IdentityResult>(environment.localApiUrl + '/Auth/resetPassword', request)
-//       .pipe(first());
-//   }
+  // mockLogout$(): void {
+  //   this.router.navigate(['login']);
+  // }
 
-//   resetPasswordWithToken(request: ResetForgottenPasswordRequest): Observable<IdentityResult> {
-//     return this.http.post<IdentityResult>(environment.localApiUrl + '/Auth/resetForgottenPassword', request)
-//       .pipe(first());
-//   }
+  // mockForgotPassword$(email: ForgotPasswordRequest): Observable<any> {
+  //   return new Observable((observer) => {
+  //     setTimeout(() => console.log(email), 1000);
+  //     observer.complete();
+  //   });
+  // }
 
-//   // MOCKED SERVICE CALLS
+  // mockResetPassword$(request: PasswordResetRequest): Observable<any> {
+  //   return new Observable((observer) => {
+  //     setTimeout(() => console.log(request), 1000);
+  //     observer.complete();
+  //   });
+  // }
 
-//   mockLogin$(credentials: AuthCredentials): Observable<any> {
-//     return new Observable((observer) => {
-//       setTimeout(() => {
-//         console.log(credentials);
-//         observer.next();
-//         observer.complete();
-//       }, 1000);
-//     });
-//   }
-
-//   mockLogout$(): void {
-//     this.router.navigate(['login']);
-//   }
-
-//   mockForgotPassword$(email: ForgotPasswordRequest): Observable<any> {
-//     return new Observable((observer) => {
-//       setTimeout(() => console.log(email), 1000);
-//       observer.complete();
-//     });
-//   }
-
-//   mockResetPassword$(request: PasswordResetRequest): Observable<any> {
-//     return new Observable((observer) => {
-//       setTimeout(() => console.log(request), 1000);
-//       observer.complete();
-//     });
-//   }
-
-//   mockResetPasswordWithToken$(request: ResetForgottenPasswordRequest): Observable<any> {
-//     return new Observable((observer) => {
-//       setTimeout(() => console.log(request), 1000);
-//       observer.complete();
-//     });
-//   }
-// }
+  // mockResetPasswordWithToken$(request: ResetForgottenPasswordRequest): Observable<any> {
+  //   return new Observable((observer) => {
+  //     setTimeout(() => console.log(request), 1000);
+  //     observer.complete();
+  //   });
+  // }
+}

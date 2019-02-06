@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-// import { AuthenticationService } from './services/authentication.service';
+import { AuthenticationService } from './services/authentication.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
@@ -7,7 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
   exports: [],
   declarations: [],
   providers: [
-    // AuthenticationService,
+    AuthenticationService,
     CookieService
   ],
 })

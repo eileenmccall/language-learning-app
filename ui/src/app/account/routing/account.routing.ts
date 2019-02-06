@@ -1,9 +1,10 @@
 // Angular Modules
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AccountComponent } from './components/account/account.component';
-import { LoginComponent } from './components/login/login.component';
-import { ForgotComponent } from './components/forgot/forgot.component';
+import { AccountComponent } from '../views/account/account.component';
+import { LoginComponent } from '../views/login/login.component';
+import { ForgotComponent } from '../views/forgot/forgot.component';
+import { RegisterComponent } from '../views/register/register.component';
 
 // Components
 
@@ -18,6 +19,9 @@ const routes: Routes = [
       }, {
         path: 'forgot',
         component: ForgotComponent
+      }, {
+        path: 'register',
+        component: RegisterComponent
       }
     ]
   }
