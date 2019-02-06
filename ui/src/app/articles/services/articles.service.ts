@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Article } from '../models/article';
+import { Article } from '../models/article.model';
+
+interface Result {
+  articles: Array<Article>;
+  collectionSize: number;
+}
 
 @Injectable()
 export class ArticlesService {
   constructor(private httpClient: HttpClient) {}
 
-  getArticles$(): Observable<Array<Article>> {
-    return this.httpClient.get<Array<Article>>(
-      'http://localhost:3000/articles'
+  getArticles$(pageSize: number, currentPage: number): Observable<Result> {
+    const queryParams = `?pageSize=${pageSize}&currentPage=${currentPage}`;
+    return this.httpClient.get<Result>(
+      'http://localhost:3000/articles/' + queryParams
     );
   }
 

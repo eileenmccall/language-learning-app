@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Article } from '../../models/article';
+import { Article } from '../../models/article.model';
 import { Observable } from 'rxjs';
 import { ArticlesService } from '../../services/articles.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -22,15 +22,27 @@ export class ArticleListComponent implements OnInit {
   ) {}
 
   public articles: Array<Article>;
+  pageSize = 2;
+  currentPage = 1;
+  collectionSize = 3;
 
   ngOnInit() {
-    this.articles = this.route.snapshot.data['articles'];
+    this.articles = this.route.snapshot.data['data'].articles;
+    this.collectionSize = this.route.snapshot.data['data'].collectionSize;
+  }
+
+  paginate (page: number) {
+    this.currentPage = page;
+    this.getArticles();
   }
 
   private getArticles(): void {
     this.articlesService
-      .getArticles$()
-      .subscribe(articles => (this.articles = articles));
+      .getArticles$(this.pageSize, this.currentPage)
+      .subscribe(result => {
+        this.articles = result.articles;
+        this.collectionSize = result.collectionSize;
+      });
   }
 
   addArticle(article: Article): void {

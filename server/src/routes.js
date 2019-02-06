@@ -70,9 +70,28 @@ app.post("/articles", (req, res, next) => {
 });
 
 app.get("/articles", (req, res, next) => {
-    Article.find().then(documents => {
-        res.status(200).json(documents);
-    });
+    const pageSize = +req.query.pageSize;
+    const currentPage = +req.query.currentPage;
+    const postQuery = Article.find();
+    let documents;
+
+    if (pageSize && currentPage) {
+        postQuery
+           .skip(pageSize * (currentPage - 1))
+           .limit(pageSize);
+    }
+
+    postQuery
+        .then(result => {
+            documents = result;
+            return Article.count();
+        })
+        .then(count => {
+            res.status(200).json({
+                articles: documents,
+                collectionSize: count
+            });
+        });
 });
 
 app.put('/articles/:id', (req, res, rext) => {

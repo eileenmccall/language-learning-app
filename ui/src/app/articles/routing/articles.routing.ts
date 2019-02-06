@@ -11,7 +11,7 @@ const articlesRoutes: Routes = [
     path: '',
     component: ArticleListComponent,
     resolve: {
-      articles: ArticlesResolver
+      data: ArticlesResolver
     }
   }
 ];

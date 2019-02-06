@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Article } from '@app/articles/models/article';
+import { Article } from '@app/articles/models/article.model';
 import { mimeType } from '@app/shared/validators/mime-type.validator';
 import { ModalResult } from '@app/articles/models/modal-result.model';
 
