@@ -28,9 +28,11 @@ passport.use(new BearerStrategy((token, done) => {
         });
 }));
 
-module.exports.require_basic = (req, res, next) => {
+module.exports.require_basic = (req, res, next) => {    
     passport.authenticate('basic', {session: false}, (err, token) => {
         req.token = token;
+
+        return next();
     })(req, res);
 }
 

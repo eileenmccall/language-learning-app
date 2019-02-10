@@ -11,16 +11,16 @@ function create (email, password) {
                 email: email,
                 password: hash
             });
-            user.save()
-                .then(result => {
-                    res.status(201).json(result);
-                }).catch(error => {
-                    res.status(500).json(error);
-                });
+            return user.save()
+        }).then(result => {
+            return result;
+        }).catch(error => {
+            throw new Error('Saving user failed');
         });
 }
 
 function login (email, password) {
+
     if (!email || !password) {
         throw new Error('Username and password are required');
     }
@@ -37,7 +37,7 @@ function login (email, password) {
     }).then(dbUser => {
         if (!dbUser) { throw new Error('User not found'); }
         user = dbUser;
-        return bcrypt.compare(req.body.password, user.password);
+        return bcrypt.compare(password, user.password);
     }).then(result => {
         if (!result) {
             throw new Error('Invalid password');

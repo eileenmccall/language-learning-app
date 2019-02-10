@@ -16,7 +16,7 @@ router.post('/register', (req, res, next) => {
         });
     }
 
-    if (!_.isString(email) || !_.isString(password)) {
+    if (!_.isString(req.body.email) || !_.isString(req.body.password)) {
         res.status(500).json({
             message: 'Invalid argument'
         });
