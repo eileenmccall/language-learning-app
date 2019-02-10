@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { AuthCredentials } from '../models/auth-credentials.model';
 import { User } from '../models/user.model';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { environment } from '@env/environment';
+import { first, map, tap } from 'rxjs/operators';
 
-// import { Observable } from 'rxjs';
-// import { first, map, tap } from 'rxjs/operators';
 // import { CookieService } from 'ngx-cookie-service';
 
 // import { environment } from '@env/environment';
@@ -13,16 +14,25 @@ import { User } from '../models/user.model';
 // import { User } from '@app/shared/models/user.model';
 // import { StateService } from './state.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthenticationService {
   constructor(
-    // private http: HttpClient,
+    private http: HttpClient,
     // private router: Router,
     // private cookieService: CookieService,
     // private stateService: StateService
   ) { }
 
-  login$(): void {}
+  register$ (email: string) {
+    return this.http.post<User>(`${environment.apiUrl}/auth/register`, email);
+  }
+
+  login$ (credentials: AuthCredentials): Observable<any> {
+    return this.http.post<User>(`${environment.apiUrl}/auth/login`, credentials)
+      .pipe(first());
+  }
 
   // login$(authCredentials: AuthCredentials): Observable<User> {
   //   return this.http.post<User>(environment.localApiUrl + '/Auth/login', authCredentials)
