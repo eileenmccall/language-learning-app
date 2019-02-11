@@ -5,15 +5,18 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class BasicInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authString = btoa(`${req.body.email}:${req.body.password}`);
-    req = req.clone({
-      setHeaders: {
-        'Authorization': `Basic ${authString}`
-      },
-    });
+    if (req.url.includes('/auth/login')) {
+      const authString = btoa(`${req.body.email}:${req.body.password}`);
 
-    console.log(req.headers);
+      req = req.clone({
+        setHeaders: {
+          'Authorization': `Basic ${authString}`
+        },
+      });
 
-    return next.handle(req);
+      return next.handle(req);
+    } else {
+      return next.handle(req);
+    }
   }
 }
