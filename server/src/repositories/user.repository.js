@@ -69,8 +69,22 @@ function getByToken (token) {
     });
 }
 
+function logout (user) {
+    return User.findOne({
+        _id: user._id
+    }).then((user) => {
+        user.token = null;
+        return user.save();
+    }).then(user => {
+        return user;
+    }).catch(err => {
+        return err;
+    });
+}
+
 module.exports = {
     create: create,
     login: login,
+    logout: logout,
     getByToken: getByToken
 }

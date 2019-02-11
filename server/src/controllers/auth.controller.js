@@ -34,4 +34,13 @@ router.post('/login', auth.require_basic, (req, res, next) => {
     });
 });
 
+router.post('/logout', auth.require_auth, (req, res, next) => {
+    userRepository.logout(req.user)
+        .then(user => {
+            res.status(200).json({
+                user: user
+            });
+        });
+})
+
 module.exports = router;

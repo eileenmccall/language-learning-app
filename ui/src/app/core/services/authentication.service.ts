@@ -20,7 +20,7 @@ import { first, map, tap } from 'rxjs/operators';
 export class AuthenticationService {
   constructor(
     private http: HttpClient,
-    // private router: Router,
+    private router: Router,
     // private cookieService: CookieService,
     // private stateService: StateService
   ) { }
@@ -38,6 +38,13 @@ export class AuthenticationService {
         }
         return response;
       }));
+  }
+
+  logout$(): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/auth/logout`, {})
+      .pipe(first())
+      .pipe(tap(() => localStorage.removeItem('token')))
+      .pipe(tap(() => this.router.navigate(['/account/login'])));
   }
 
   // login$(authCredentials: AuthCredentials): Observable<User> {
