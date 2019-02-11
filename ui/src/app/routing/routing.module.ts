@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => PublicModule
   }, {
     path: 'articles',
-    canActivate: [AuthGuardService],
+    // canActivate: [AuthGuardService],
     loadChildren: () => ArticlesModule
   }, {
     path: 'account',

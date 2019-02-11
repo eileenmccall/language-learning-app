@@ -19,10 +19,8 @@ passport.use(new BearerStrategy((token, done) => {
     userRepository.getByToken(token)
         .then(user => {
             return done(null, user);
-        }).catch(error, function() {
-            return done(null, false);
-        }).catch(function(err) {
-            console.error(err);
+        }).catch((error) => {
+            return done(error, false);
         });
 }));
 
@@ -45,8 +43,7 @@ module.exports.require_auth = (req, res, next) => {
     passport.authenticate('bearer', { session: false }, function(err, user, info) {
         req.user = user;
         
-        if (err)
-        { 
+        if (err) { 
           return next(err);
         }
         

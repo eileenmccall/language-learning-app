@@ -15,6 +15,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditArticleModalComponent } from './components/edit-article-modal/edit-article-modal.component';
 import { SharedModule } from '@app/shared/shared.module';
 import { ArticlesResolver } from './routing/resolvers/articles.resolver';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from '@app/core/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,14 @@ import { ArticlesResolver } from './routing/resolvers/articles.resolver';
     SharedModule,
     ArticlesRoutes
   ],
-  providers: [ArticlesService, ArticlesResolver]
+  providers: [
+    ArticlesService,
+    ArticlesResolver,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ]
 })
 export class ArticlesModule {}

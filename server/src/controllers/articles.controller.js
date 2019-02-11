@@ -1,9 +1,10 @@
 const express = require("express");
 const Article = require("../models/article.model");
+const auth = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
-router.get("", (req, res, next) => {
+router.get("", auth.require_auth, (req, res, next) => {
     const pageSize = +req.query.pageSize;
     const currentPage = +req.query.currentPage;
     const postQuery = Article.find();

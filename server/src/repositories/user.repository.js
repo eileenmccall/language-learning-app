@@ -65,6 +65,7 @@ function getByToken (token) {
         if (!user) { throw new Error('Invalid token'); }
         return user;
     }).catch(err => {
+        return err;
     });
 }
 
