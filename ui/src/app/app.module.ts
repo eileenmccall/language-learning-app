@@ -8,6 +8,7 @@ import { PageNotFoundComponent } from './shared/components/page-not-found/page-n
 import { RoutingModule } from './routing/routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BasicInterceptor } from './core/interceptors/basic.interceptor';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,10 @@ import { BasicInterceptor } from './core/interceptors/basic.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: BasicInterceptor,
+      multi: true
+    }, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true
     }
   ],
