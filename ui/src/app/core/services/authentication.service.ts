@@ -25,6 +25,10 @@ export class AuthenticationService {
     // private stateService: StateService
   ) { }
 
+  get isAuthenticated () {
+    return localStorage.getItem('token') ? true : false;
+  }
+
   register$ (email: string) {
     return this.http.post<User>(`${environment.apiUrl}/auth/register`, email);
   }
