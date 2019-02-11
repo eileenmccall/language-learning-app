@@ -6,7 +6,8 @@ import { AppComponent } from './app.component';
 import { AuthGuardService } from './routing/guards/auth-guard.service';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { RoutingModule } from './routing/routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BasicInterceptor } from './core/interceptors/basic.interceptor';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,14 @@ import { HttpClientModule } from '@angular/common/http';
     FontAwesomeModule,
     RoutingModule
   ],
-  providers: [AuthGuardService],
+  providers: [
+    AuthGuardService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: BasicInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

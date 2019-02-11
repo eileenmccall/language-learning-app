@@ -15,11 +15,13 @@ function create (email, password) {
         }).then(result => {
             return result;
         }).catch(error => {
-            throw new Error('Saving user failed');
+            return error;
         });
 }
 
 function login (email, password) {
+
+    console.log(email, password);
 
     if (!email || !password) {
         throw new Error('Username and password are required');
@@ -30,6 +32,7 @@ function login (email, password) {
     }
 
     let user;
+    let token;
 
     // Need to save token here somehow
     return User.findOne({
@@ -43,12 +46,15 @@ function login (email, password) {
             throw new Error('Invalid password');
         }
 
-        const token = jwt.sign(
+        token = jwt.sign(
             { email: user.email, _id: user._id },
             'this_is_a_secret_key', 
             { expiresIn: '1h' }
         );
 
+        user.token = token;
+        return user.save();
+    }).then(user => {
         return token;
     }).catch(error => {
         throw new Error('Authentication failed');

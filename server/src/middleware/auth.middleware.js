@@ -10,10 +10,8 @@ passport.use(new BasicStrategy({
     userRepository.login(email, password)
         .then(token => {
             return done(null, token);
-        }).catch(Error, () => {
-            return done(null, false);
-        }).catch(err => {
-            console.error(err);    
+        }).catch(error => {
+            return done(error, false);   
         });
 })));
 
@@ -29,10 +27,17 @@ passport.use(new BearerStrategy((token, done) => {
 }));
 
 module.exports.require_basic = (req, res, next) => {    
-    passport.authenticate('basic', {session: false}, (err, token) => {
+    passport.authenticate('basic', {session: false}, (error, token) => {
         req.token = token;
 
-        return next();
+        if (error) {
+            return next(error);
+        }
+
+        if (token) {
+            return next();
+        }
+        return res.status(500).json({message: 'User not found'});
     })(req, res);
 }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthCredentials } from '../models/auth-credentials.model';
 import { User } from '../models/user.model';
 import { Router } from '@angular/router';
