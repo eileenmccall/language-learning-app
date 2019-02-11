@@ -30,8 +30,8 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authenticationService.login$(this.form.value).subscribe((result) => {
-      console.log(result);
+    this.authenticationService.login$(this.form.value).subscribe((response) => {
+      this.router.navigate(['/articles']);
     });
   }
 
