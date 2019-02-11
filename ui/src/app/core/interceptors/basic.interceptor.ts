@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 export class BasicInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.includes('/auth/login')) {
+      localStorage.removeItem('token');
+
       const authString = btoa(`${req.body.email}:${req.body.password}`);
 
       req = req.clone({

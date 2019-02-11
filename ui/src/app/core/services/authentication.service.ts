@@ -25,9 +25,8 @@ export class AuthenticationService {
     // private stateService: StateService
   ) { }
 
-  private _token: string;
   get token () {
-    return this._token;
+    return localStorage.getItem('token');
   }
 
   register$ (email: string) {
@@ -38,7 +37,9 @@ export class AuthenticationService {
     return this.http.post<{token: string}>(`${environment.apiUrl}/auth/login`, credentials)
       .pipe(first())
       .pipe(map((response: {token: string}) => {
-        this._token = response.token;
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+        }
         return response;
       }));
   }
