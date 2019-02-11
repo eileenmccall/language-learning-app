@@ -25,13 +25,22 @@ export class AuthenticationService {
     // private stateService: StateService
   ) { }
 
+  private _token: string;
+  get token () {
+    return this._token;
+  }
+
   register$ (email: string) {
     return this.http.post<User>(`${environment.apiUrl}/auth/register`, email);
   }
 
-  login$ (credentials: AuthCredentials): Observable<any> {
-    return this.http.post<User>(`${environment.apiUrl}/auth/login`, credentials)
-      .pipe(first());
+  login$ (credentials: AuthCredentials): Observable<{token: string}> {
+    return this.http.post<{token: string}>(`${environment.apiUrl}/auth/login`, credentials)
+      .pipe(first())
+      .pipe(map((response: {token: string}) => {
+        this._token = response.token;
+        return response;
+      }));
   }
 
   // login$(authCredentials: AuthCredentials): Observable<User> {
