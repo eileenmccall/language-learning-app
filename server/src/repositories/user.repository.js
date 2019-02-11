@@ -21,8 +21,6 @@ function create (email, password) {
 
 function login (email, password) {
 
-    console.log(email, password);
-
     if (!email || !password) {
         throw new Error('Username and password are required');
     }
@@ -34,7 +32,6 @@ function login (email, password) {
     let user;
     let token;
 
-    // Need to save token here somehow
     return User.findOne({
         email: email.toLowerCase().trim()
     }).then(dbUser => {
