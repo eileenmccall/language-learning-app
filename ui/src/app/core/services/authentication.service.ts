@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { first, map, tap } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 // import { CookieService } from 'ngx-cookie-service';
 
@@ -23,10 +24,16 @@ export class AuthenticationService {
     private router: Router,
     // private cookieService: CookieService,
     // private stateService: StateService
-  ) { }
+  ) {
+    this.jwtHelper = new JwtHelperService();
+  }
+
+  jwtHelper: JwtHelperService;
 
   get isAuthenticated () {
-    return localStorage.getItem('token') ? true : false;
+    const token = localStorage.getItem('token');
+    const isExpired = this.jwtHelper.isTokenExpired(token);
+    return token && !isExpired  ? true : false;
   }
 
   register$ (email: string) {

@@ -6,7 +6,8 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { AuthenticationService } from '@app/core/services/authentication.service';
-// import { AuthService } from './auth.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 @Injectable()
 export class AuthGuardService implements CanActivate {
   constructor(

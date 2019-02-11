@@ -9,6 +9,8 @@ import { RoutingModule } from './routing/routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BasicInterceptor } from './core/interceptors/basic.interceptor';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { JwtModule } from '@auth0/angular-jwt';
+import { environment } from '@env/environment';
 
 @NgModule({
   declarations: [
@@ -26,10 +28,6 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: BasicInterceptor,
-      multi: true
-    }, {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
       multi: true
     }
   ],
