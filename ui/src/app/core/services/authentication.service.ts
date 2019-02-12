@@ -36,6 +36,12 @@ export class AuthenticationService {
     return token && !isExpired  ? true : false;
   }
 
+  get role () {
+    const token = localStorage.getItem('token');
+    const role = this.jwtHelper.decodeToken(token).role;
+    return role;
+  }
+
   register$ (email: string) {
     return this.http.post<User>(`${environment.apiUrl}/auth/register`, email);
   }

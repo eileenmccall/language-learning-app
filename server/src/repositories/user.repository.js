@@ -44,7 +44,11 @@ function login (email, password) {
         }
 
         token = jwt.sign(
-            { email: user.email, _id: user._id },
+            { 
+                email: user.email, 
+                _id: user._id,
+                role: user.role
+            },
             'this_is_a_secret_key', 
             { expiresIn: '1h' }
         );

@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     token: { type: String },
-    role: { type: Number, required: false }
+    role: { type: String, required: false }
 });
 
 userSchema.plugin(unique);

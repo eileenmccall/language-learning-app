@@ -69,12 +69,12 @@ module.exports.require_role = (role) => {
 
 module.exports.roles = {
     "admin": {
-        id: 1,
+        id: "admin",
         name: "Admin",
         description: "Admin user"
     },
     "user": {
-        id: 2,
+        id: "user",
         name: "User",
         description: "User"
     }
