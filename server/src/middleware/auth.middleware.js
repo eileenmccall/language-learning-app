@@ -54,3 +54,28 @@ module.exports.require_auth = (req, res, next) => {
         return res.send(403, { message: "You are not permitted to perform this action." });
       })(req, res);
 }
+
+module.exports.require_role = (role) => {
+    return (req, res, next) => {
+        if (req.user && req.user.role === role.id) {
+            next();
+        } else {
+            res.status(403).json({
+                message: "You are not permitted to perform this action."
+            })
+        }
+    }
+}
+
+module.exports.roles = {
+    "admin": {
+        id: 1,
+        name: "Admin",
+        description: "Admin user"
+    },
+    "user": {
+        id: 2,
+        name: "User",
+        description: "User"
+    }
+}

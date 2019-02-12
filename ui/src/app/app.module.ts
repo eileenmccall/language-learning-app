@@ -29,6 +29,10 @@ import { environment } from '@env/environment';
       provide: HTTP_INTERCEPTORS,
       useClass: BasicInterceptor,
       multi: true
+    }, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]

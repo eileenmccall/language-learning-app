@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const multer = require("multer");
+const auth = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
@@ -23,9 +24,13 @@ const storage = multer.diskStorage({
     }
 });
 
-router.post("", multer({ storage: storage }).single("image"), (req, res, rext) => {
-    const url = req.protocol + '://' +req.get('host');
-    res.json(url + '/images/' + req.file.filename);
-});
+router.post("",
+    auth.require_auth,
+    multer({ storage: storage }).single("image"),
+    (req, res, rext) => {
+        const url = req.protocol + '://' +req.get('host');
+        res.json(url + '/images/' + req.file.filename);
+    }
+);
 
 module.exports = router;
