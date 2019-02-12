@@ -6,6 +6,7 @@ import { PageNotFoundComponent } from '../shared/components/page-not-found/page-
 import { SharedModule } from '../shared/shared.module';
 import { PublicModule } from '../public/public.module';
 import { AccountModule } from '../account/account.module';
+import { RoleGuardService } from './guards/role-guard.service';
 
 const routes: Routes = [
   {
@@ -13,7 +14,13 @@ const routes: Routes = [
     loadChildren: () => PublicModule
   }, {
     path: 'articles',
-    canActivate: [AuthGuardService],
+    canActivate: [
+      AuthGuardService,
+      RoleGuardService
+    ],
+    data: {
+      role: 'admin'
+    },
     loadChildren: () => ArticlesModule
   }, {
     path: 'account',
@@ -30,7 +37,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   providers: [
-    AuthGuardService
+    AuthGuardService,
+    RoleGuardService
   ],
   exports: [RouterModule],
   declarations: [],
