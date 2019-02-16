@@ -18,6 +18,13 @@ export function authReducer(
         user: action.payload
       };
 
+    case AuthActionTypes.Logout:
+      return {
+        ...state,
+        authenticated: false,
+        user: null
+      };
+
     default:
       return state;
   }
