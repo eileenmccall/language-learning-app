@@ -3,10 +3,10 @@ import { AuthenticationService } from '@app/core/services/authentication.service
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '@app/reducers';
 import { tap } from 'rxjs/operators';
 import { Login } from '@app/store/auth/auth.actions';
 import { User } from '@app/core/models/user.model';
+import { AppState } from '@app/store';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
     private router: Router,
-    private store: Store<AppState>
+    private store: Store<AppState.State>
   ) { }
 
   form: FormGroup;
