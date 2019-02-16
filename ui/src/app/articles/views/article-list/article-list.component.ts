@@ -21,28 +21,33 @@ export class ArticleListComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  public articles: Array<Article>;
-  pageSize = 2;
-  currentPage = 1;
-  collectionSize = 3;
+  // ignoring pagination stuff for now
+
+  // public articles: Array<Article>;
+  // pageSize = 2;
+  // currentPage = 1;
+  // collectionSize = 3;
+
+  articles: Observable<Array<Article>>;
 
   ngOnInit() {
-    this.articles = this.route.snapshot.data['data'].articles;
-    this.collectionSize = this.route.snapshot.data['data'].collectionSize;
+    this.getArticles();
+    // this.articles = this.route.snapshot.data['data'].articles;
+    // this.collectionSize = this.route.snapshot.data['data'].collectionSize;
   }
 
-  paginate (page: number) {
-    this.currentPage = page;
-    this.getArticles();
-  }
+  // paginate (page: number) {
+  //   this.currentPage = page;
+  //   this.getArticles();
+  // }
 
   private getArticles(): void {
-    this.articlesService
-      .getArticles$(this.pageSize, this.currentPage)
-      .subscribe(result => {
-        this.articles = result.articles;
-        this.collectionSize = result.collectionSize;
-      });
+    this.articles = this.articlesService
+      .getArticles$();
+      // .subscribe(result => {
+      //   this.articles = result.articles;
+      //   this.collectionSize = result.collectionSize;
+      // });
   }
 
   addArticle(article: Article): void {

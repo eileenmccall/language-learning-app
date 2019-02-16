@@ -7,28 +7,31 @@ const router = express.Router();
 router.get("",
     auth.require_auth,
     (req, res, next) => {
-        const pageSize = +req.query.pageSize;
-        const currentPage = +req.query.currentPage;
+        // const pageSize = +req.query.pageSize;
+        // const currentPage = +req.query.currentPage;
         const postQuery = Article.find();
-        let documents;
+        // let documents;
 
-        if (pageSize && currentPage) {
-            postQuery
-            .skip(pageSize * (currentPage - 1))
-            .limit(pageSize);
-        }
+        // if (pageSize && currentPage) {
+        //     postQuery
+        //     .skip(pageSize * (currentPage - 1))
+        //     .limit(pageSize);
+        // }
 
         postQuery
             .then(result => {
-                documents = result;
-                return Article.count();
+                res.status(200).json(result);
             })
-            .then(count => {
-                res.status(200).json({
-                    articles: documents,
-                    collectionSize: count
-                });
-            });
+            // .then(result => {
+            //     documents = result;
+            //     return Article.count();
+            // })
+            // .then(count => {
+            //     res.status(200).json({
+            //         articles: documents,
+            //         collectionSize: count
+            //     });
+            // });
     }
 );
 

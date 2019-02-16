@@ -10,11 +10,11 @@ interface Result {
 }
 
 @Injectable()
-export class ArticlesResolver implements Resolve<Result> {
+export class ArticlesResolver implements Resolve<Array<Article>> {
 
   constructor(private articlesService: ArticlesService) { }
 
-  resolve(): Observable<Result> {
-    return this.articlesService.getArticles$(2, 1);
+  resolve(): Observable<Array<Article>> {
+    return this.articlesService.getArticles$();
   }
 }

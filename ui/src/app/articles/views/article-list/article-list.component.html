@@ -6,11 +6,11 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-12 col-md-6 col-lg-4" *ngFor="let article of articles">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let article of articles | async">
       <app-article [article]="article" (edit)="openModal($event)" (delete)="onDelete($event)"></app-article>
     </div>
   </div>
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-12">
       <ngb-pagination
         [(page)]="currentPage"
@@ -19,5 +19,5 @@
         (pageChange)="paginate($event)"
       ></ngb-pagination>
     </div>
-  </div>
+  </div> -->
 </div>

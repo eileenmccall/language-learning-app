@@ -11,6 +11,9 @@ import { BasicInterceptor } from './core/interceptors/basic.interceptor';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { JwtModule } from '@auth0/angular-jwt';
 import { environment } from '@env/environment';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,9 @@ import { environment } from '@env/environment';
     HttpClientModule,
     FlexLayoutModule,
     FontAwesomeModule,
-    RoutingModule
+    RoutingModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [
     AuthGuardService,

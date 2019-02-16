@@ -10,9 +10,9 @@ const articlesRoutes: Routes = [
   {
     path: '',
     component: ArticleListComponent,
-    resolve: {
-      data: ArticlesResolver
-    }
+    // resolve: {
+    //   data: ArticlesResolver
+    // }
   }
 ];
 

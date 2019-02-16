@@ -12,10 +12,10 @@ interface Result {
 export class ArticlesService {
   constructor(private httpClient: HttpClient) {}
 
-  getArticles$(pageSize: number, currentPage: number): Observable<Result> {
-    const queryParams = `?pageSize=${pageSize}&currentPage=${currentPage}`;
-    return this.httpClient.get<Result>(
-      'http://localhost:3000/articles/' + queryParams
+  getArticles$(): Observable<Array<Article>> {
+    // const queryParams = `?pageSize=${pageSize}&currentPage=${currentPage}`;
+    return this.httpClient.get<Array<Article>>(
+      'http://localhost:3000/articles/'
     );
   }
 
