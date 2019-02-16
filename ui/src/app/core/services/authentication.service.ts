@@ -46,14 +46,14 @@ export class AuthenticationService {
     return this.http.post<User>(`${environment.apiUrl}/auth/register`, email);
   }
 
-  login$ (credentials: AuthCredentials): Observable<{token: string}> {
-    return this.http.post<{token: string}>(`${environment.apiUrl}/auth/login`, credentials)
+  login$ (credentials: AuthCredentials): Observable<User> {
+    return this.http.post<User>(`${environment.apiUrl}/auth/login`, credentials)
       .pipe(first())
-      .pipe(map((response: {token: string}) => {
-        if (response && response.token) {
-          localStorage.setItem('token', response.token);
+      .pipe(map((user: User) => {
+        if (user && user.token) {
+          localStorage.setItem('token', user.token);
         }
-        return response;
+        return user;
       }));
   }
 
