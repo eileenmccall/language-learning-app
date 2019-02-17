@@ -60,8 +60,7 @@ export class AuthenticationService {
   logout$(): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/auth/logout`, {})
       .pipe(first())
-      .pipe(tap(() => localStorage.removeItem('token')))
-      .pipe(tap(() => this.router.navigate(['/account/login'])));
+      .pipe(tap(() => localStorage.removeItem('token')));
   }
 
   // login$(authCredentials: AuthCredentials): Observable<User> {

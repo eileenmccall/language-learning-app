@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
       this.store.dispatch(new Login(user));
     }))
     .subscribe((response) => {
-      console.log(response);
       this.router.navigate(['/articles']);
     });
   }
