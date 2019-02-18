@@ -9,6 +9,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BasicInterceptor } from './core/interceptors/basic.interceptor';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { AppStoreModule } from './store';
+import { StoreRouterConnectingModule, routerReducer, RouterStateSerializer } from '@ngrx/router-store';
+import { RouteSerializer } from './store/router/route.serializer';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { environment } from '@env/environment';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { storeFreeze } from 'ngrx-store-freeze';
 
 @NgModule({
   declarations: [
@@ -20,11 +27,25 @@ import { AppStoreModule } from './store';
     FlexLayoutModule,
     FontAwesomeModule,
     AppStoreModule,
+    StoreModule.forRoot({
+      router: routerReducer
+    }, {
+      metaReducers: !environment.production ? [storeFreeze] : []
+    }),
+    EffectsModule.forRoot([]),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreRouterConnectingModule.forRoot({
+      serializer: RouteSerializer,
+      stateKey: 'router'
+    }),
     RoutingModule
   ],
   providers: [
     AuthGuardService,
     {
+      provide: RouterStateSerializer,
+      useClass: RouteSerializer
+    }, {
       provide: HTTP_INTERCEPTORS,
       useClass: BasicInterceptor,
       multi: true
