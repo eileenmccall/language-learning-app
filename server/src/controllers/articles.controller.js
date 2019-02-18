@@ -35,6 +35,20 @@ router.get("",
     }
 );
 
+router.get("/:id",
+    auth.require_auth,
+    (req, res, next) => {
+        Article.findById(req.params.id)
+            .then((article) => {
+                res.status(200).json(article)
+            }, (err) => {
+                res.status(500).json({
+                    message: err
+                })
+            });
+    }
+)
+
 router.post("",
     auth.require_auth,
     (req, res, next) => {

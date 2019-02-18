@@ -6,6 +6,7 @@
     <div class="buttons-container">
       <button class="btn btn-info" (click)="editArticle()">Edit</button>
       <button class="btn btn-danger" (click)="deleteArticle()">Delete</button>
+      <button class="btn btn-primary" [routerLink]="['/articles', article._id]">View</button>
     </div>
   </div>
 </div>

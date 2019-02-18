@@ -17,12 +17,17 @@ import { SharedModule } from '@app/shared/shared.module';
 import { ArticlesResolver } from './routing/resolvers/articles.resolver';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '@app/core/interceptors/auth.interceptor';
+import { ArticleDetailsComponent } from './views/article-details/article-details.component';
+import { ArticleDetailsResolver } from './routing/resolvers/article-details.resolver';
+import { ArticlesComponent } from './views/articles/articles.component';
 
 @NgModule({
   declarations: [
     ArticleComponent,
     ArticleListComponent,
-    EditArticleModalComponent
+    EditArticleModalComponent,
+    ArticleDetailsComponent,
+    ArticlesComponent
   ],
   entryComponents: [EditArticleModalComponent],
   imports: [
@@ -36,6 +41,7 @@ import { AuthInterceptor } from '@app/core/interceptors/auth.interceptor';
   providers: [
     ArticlesService,
     ArticlesResolver,
+    ArticleDetailsResolver,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

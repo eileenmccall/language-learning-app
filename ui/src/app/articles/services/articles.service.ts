@@ -19,6 +19,12 @@ export class ArticlesService {
     );
   }
 
+  getArticleById$(id: string): Observable<Article> {
+    return this.httpClient.get<Article>(
+      'http://localhost:3000/articles/' + id
+    );
+  }
+
   addArticle$(article: Article): Observable<Article> {
     return this.httpClient.post<Article>(
       'http://localhost:3000/articles',
