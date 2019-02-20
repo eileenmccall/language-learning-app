@@ -7,6 +7,8 @@ import { EditArticleModalComponent } from '../../components/edit-article-modal/e
 import { ModalResult } from '@app/articles/models/modal-result.model';
 import { FileUploadService } from '@app/shared/services/file-upload.service';
 import { ActivatedRoute } from '@angular/router';
+import { Store, select } from '@ngrx/store';
+import { AppState, ArticlesActions, ArticlesSelectors } from '@app/store';
 
 @Component({
   selector: 'app-article-list',
@@ -18,7 +20,8 @@ export class ArticleListComponent implements OnInit {
     private articlesService: ArticlesService,
     private modalService: NgbModal,
     private fileUploadService: FileUploadService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store<AppState.State>
   ) {}
 
   // ignoring pagination stuff for now
@@ -31,7 +34,10 @@ export class ArticleListComponent implements OnInit {
   articles: Observable<Array<Article>>;
 
   ngOnInit() {
-    this.getArticles();
+    this.store.dispatch(new ArticlesActions.ArticlesListRequested());
+
+    this.articles = this.store
+      .pipe(select(ArticlesSelectors.selectArticlesList));
     // this.articles = this.route.snapshot.data['data'].articles;
     // this.collectionSize = this.route.snapshot.data['data'].collectionSize;
   }

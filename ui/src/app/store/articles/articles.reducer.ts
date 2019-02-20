@@ -10,6 +10,12 @@ export function articlesReducer(
     case ArticlesActionTypes.ArticleLoaded:
       return adapter.addOne(action.payload.article, state);
 
+    case ArticlesActionTypes.ArticlesListLoaded:
+      return adapter.addAll(action.payload.articles, {
+        ...state,
+        loaded: true
+      });
+
     default:
       return state;
   }
