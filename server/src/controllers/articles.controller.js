@@ -67,7 +67,7 @@ router.post("",
 router.put("/:id", 
     auth.require_auth, 
     (req, res, rext) => {
-        Article.findByIdAndUpdate(req.params.id, req.body)
+        Article.findByIdAndUpdate(req.params.id, req.body, {new: true})
             .then((document) => {
                 res.status(201).json(document);
             });

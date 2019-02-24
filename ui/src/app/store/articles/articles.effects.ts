@@ -5,9 +5,13 @@ import {
   ArticlesActionTypes,
   ArticleLoaded,
   ArticlesListRequested,
-  ArticlesListLoaded
+  ArticlesListLoaded,
+  ArticleCreateRequested,
+  ArticleCreateSuccess,
+  ArticleUpdateRequested,
+  ArticleUpdateSuccess
 } from './articles.actions';
-import { mergeMap, map, withLatestFrom, filter } from 'rxjs/operators';
+import { mergeMap, map, withLatestFrom, filter, merge } from 'rxjs/operators';
 import { ArticlesService } from '@app/articles/services/articles.service';
 import { Article } from '@app/articles/models/article.model';
 import { Store, select } from '@ngrx/store';
@@ -34,6 +38,37 @@ export class ArticlesEffects {
       return this.articlesService.getArticles$();
     }))
     .pipe(map((articles: Array<Article>) => new ArticlesListLoaded({articles: articles})));
+
+  @Effect()
+  createArticle$ = this.actions$.pipe(
+    ofType<ArticleCreateRequested>(ArticlesActionTypes.ArticleCreateRequested)
+  ).pipe(
+    mergeMap((action: ArticleCreateRequested) => {
+      return this.articlesService.addArticle$(action.payload.article);
+    })
+  ).pipe(
+    map(article => new ArticleCreateSuccess({
+      article: article
+    }))
+  );
+
+  @Effect()
+  updateArticle$ = this.actions$.pipe(
+    ofType<ArticleUpdateRequested>(ArticlesActionTypes.ArticleUpdateRequested)
+  ).pipe(
+    mergeMap((action: ArticleUpdateRequested) => {
+      return this.articlesService.editArticle$(action.payload.article);
+    })
+  ).pipe(
+    map((article) => {
+      return new ArticleUpdateSuccess({
+        article: {
+          id: article._id,
+          changes: article
+        }
+      });
+    })
+  );
 
   constructor(
     private actions$: Actions,

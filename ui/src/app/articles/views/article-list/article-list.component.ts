@@ -56,12 +56,6 @@ export class ArticleListComponent implements OnInit {
       // });
   }
 
-  addArticle(article: Article): void {
-    this.articlesService.addArticle$(article).subscribe(() => {
-      this.getArticles();
-    });
-  }
-
   openModal(article: Article | null): void {
     const modalRef: NgbModalRef = this.modalService.open(
       EditArticleModalComponent,
@@ -72,28 +66,20 @@ export class ArticleListComponent implements OnInit {
 
     modalRef.result.then(
       (result: ModalResult | null) => {
-        if (result && result.file) {
-          this.fileUploadService
-            .uploadFile$(result.title, result.file)
-            .subscribe(fileUrl => {
-              if (fileUrl && article) {
-                this.editArticle({
-                  ...result,
-                  imageUrl: fileUrl
-                } as Article);
-              } else if (fileUrl) {
-                this.addArticle({
-                  ...result,
-                  imageUrl: fileUrl
-                } as Article);
-              }
+        if (!result) { return; }
+
+        const newArticle = {
+          ...result.article
+        } as Article;
+
+        if (result.imageUpdated) {
+          this.fileUploadService.uploadFile$(result.article.title, result.article.file)
+            .subscribe((imageUrl: string) => {
+              newArticle.imageUrl = imageUrl;
+              this.editArticle(newArticle);
             });
-        } else if (result) {
-          if (article) {
-            this.editArticle(result as Article);
-          } else {
-            this.addArticle(result as Article);
-          }
+        } else {
+          this.editArticle(newArticle);
         }
       },
       (result: any) => {
@@ -103,9 +89,15 @@ export class ArticleListComponent implements OnInit {
   }
 
   editArticle(article: Article): void {
-    this.articlesService.editArticle$(article).subscribe(() => {
-      this.getArticles();
-    });
+    if (article._id) {
+      this.store.dispatch(new ArticlesActions.ArticleUpdateRequested({
+        article: article
+      }));
+    } else {
+      this.store.dispatch(new ArticlesActions.ArticleCreateRequested({
+        article: article
+      }));
+    }
   }
 
   onDelete(event: Article) {
