@@ -1,6 +1,8 @@
 import { Action } from '@ngrx/store';
 import { Article } from '@app/articles/models/article.model';
 import { Update } from '@ngrx/entity';
+import { PageOptions } from '@app/shared/models/pageOptions.model';
+import { GridData } from '@app/shared/models/grid-data.model';
 
 export enum ArticlesActionTypes {
   ArticleRequested = '[Article List] ARTICLE_REQUESTED',
@@ -29,12 +31,14 @@ export class ArticleLoaded implements Action {
 
 export class ArticlesListRequested implements Action {
   readonly type = ArticlesActionTypes.ArticlesListRequested;
+
+  constructor (public payload: { pageOptions: PageOptions }) {}
 }
 
 export class ArticlesListLoaded implements Action {
   readonly type = ArticlesActionTypes.ArticlesListLoaded;
 
-  constructor (public payload: { articles: Array<Article> }) {}
+  constructor (public payload: { data: GridData<Article> }) {}
 }
 
 export class ArticleCreateRequested implements Action {

@@ -9,14 +9,14 @@
       <app-article [article]="article" (edit)="openModal($event)" (delete)="onDelete($event)"></app-article>
     </div>
   </div>
-  <!-- <div class="row">
+  <div class="row">
     <div class="col-12">
       <ngb-pagination
-        [(page)]="currentPage"
-        [pageSize]="pageSize"
-        [collectionSize]="collectionSize"
+        [page]="pageOptions.index"
+        [pageSize]="pageOptions.size"
+        [collectionSize]="collectionSize | async"
         (pageChange)="paginate($event)"
       ></ngb-pagination>
     </div>
-  </div> -->
+  </div>
 </div>

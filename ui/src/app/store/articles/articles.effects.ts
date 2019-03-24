@@ -17,27 +17,33 @@ import { Article } from '@app/articles/models/article.model';
 import { Store, select } from '@ngrx/store';
 import { State } from '../app-store.state';
 import { articlesListLoaded } from './articles.selectors';
+import { GridData } from '@app/shared/models/grid-data.model';
 
 @Injectable()
 export class ArticlesEffects {
 
   @Effect()
-  loadArticle$ = this.actions$
-    .pipe(ofType<ArticleRequested>(ArticlesActionTypes.ArticleRequested))
-    .pipe(mergeMap((action: ArticleRequested) => {
+  loadArticle$ = this.actions$.pipe(
+    ofType<ArticleRequested>(ArticlesActionTypes.ArticleRequested)
+  ).pipe(
+    mergeMap((action: ArticleRequested) => {
       return this.articlesService.getArticleById$(action.payload.articleId);
-    }))
-    .pipe(map(article => new ArticleLoaded({article: article})));
+    })
+  ).pipe(
+    map(article => new ArticleLoaded({article: article}))
+  );
 
   @Effect()
-  loadArticlesList$ = this.actions$
-    .pipe(ofType<ArticlesListRequested>(ArticlesActionTypes.ArticlesListRequested))
-    .pipe(withLatestFrom(this.store.pipe(select(articlesListLoaded))))
-    .pipe(filter(([action, requested]: [ArticlesListRequested, boolean]) => !requested))
-    .pipe(mergeMap(([action, requested]) => {
-      return this.articlesService.getArticles$();
-    }))
-    .pipe(map((articles: Array<Article>) => new ArticlesListLoaded({articles: articles})));
+  loadArticlesList$ = this.actions$.pipe(
+    ofType<ArticlesListRequested>(ArticlesActionTypes.ArticlesListRequested)
+  ).pipe(mergeMap((action: ArticlesListRequested) => {
+      return this.articlesService.getArticles$(action.payload.pageOptions);
+    })
+  ).pipe(
+    map((gridData: GridData<Article>) => {
+      return new ArticlesListLoaded({data: gridData});
+    })
+  );
 
   @Effect()
   createArticle$ = this.actions$.pipe(

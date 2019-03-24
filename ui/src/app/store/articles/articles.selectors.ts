@@ -12,6 +12,11 @@ export const selectArticleById = (articleId: string) => {
   );
 };
 
+export const selectCollectionSize = createSelector(
+  selectArticlesState,
+  state => state.collectionSize
+);
+
 export const selectArticlesList = createSelector(
   selectArticlesState,
   selectAll

@@ -12,8 +12,10 @@ export function articlesReducer(
       return adapter.addOne(action.payload.article, state);
 
     case ArticlesActionTypes.ArticlesListLoaded:
-      return adapter.addAll(action.payload.articles, {
+      adapter.removeAll({...state, loaded: false});
+      return adapter.addAll(action.payload.data.data, {
         ...state,
+        collectionSize: action.payload.data.collectionSize,
         loaded: true
       });
 

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Article } from '../models/article.model';
+import { PageOptions } from '@app/shared/models/pageOptions.model';
+import { GridData } from '@app/shared/models/grid-data.model';
 
 interface Result {
   articles: Array<Article>;
@@ -12,10 +14,10 @@ interface Result {
 export class ArticlesService {
   constructor(private httpClient: HttpClient) {}
 
-  getArticles$(): Observable<Array<Article>> {
-    // const queryParams = `?pageSize=${pageSize}&currentPage=${currentPage}`;
-    return this.httpClient.get<Array<Article>>(
-      'http://localhost:3000/articles/'
+  getArticles$(pageOptions: PageOptions): Observable<GridData<Article>> {
+    const queryParams = `?pageSize=${pageOptions.size}&currentPage=${pageOptions.index}`;
+    return this.httpClient.get<GridData<Article>>(
+      'http://localhost:3000/articles' + queryParams
     );
   }
 

@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Components
 import { ArticleListComponent } from '../views/article-list/article-list.component';
-import { ArticlesResolver } from './resolvers/articles.resolver';
+// import { ArticlesResolver } from './resolvers/articles.resolver';
 import { ArticleDetailsResolver } from './resolvers/article-details.resolver';
 import { ArticleDetailsComponent } from '../views/article-details/article-details.component';
 import { ArticlesComponent } from '../views/articles/articles.component';

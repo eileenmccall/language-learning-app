@@ -9,6 +9,7 @@ import { FileUploadService } from '@app/shared/services/file-upload.service';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { AppState, ArticlesActions, ArticlesSelectors } from '@app/store';
+import { PageOptions } from '@app/shared/models/pageOptions.model';
 
 @Component({
   selector: 'app-article-list',
@@ -26,34 +27,37 @@ export class ArticleListComponent implements OnInit {
 
   // ignoring pagination stuff for now
 
-  // public articles: Array<Article>;
   // pageSize = 2;
   // currentPage = 1;
   // collectionSize = 3;
+  public pageOptions = new PageOptions();
 
   articles: Observable<Array<Article>>;
+  collectionSize: Observable<number>;
 
   ngOnInit() {
-    this.store.dispatch(new ArticlesActions.ArticlesListRequested());
+    console.log(this.pageOptions);
+    this.store.dispatch(
+      new ArticlesActions.ArticlesListRequested({
+        pageOptions: {...this.pageOptions}
+      })
+    );
 
     this.articles = this.store
       .pipe(select(ArticlesSelectors.selectArticlesList));
+
+    this.collectionSize = this.store.pipe(
+      select(ArticlesSelectors.selectCollectionSize)
+    );
     // this.articles = this.route.snapshot.data['data'].articles;
     // this.collectionSize = this.route.snapshot.data['data'].collectionSize;
   }
 
-  // paginate (page: number) {
-  //   this.currentPage = page;
-  //   this.getArticles();
-  // }
-
-  private getArticles(): void {
-    this.articles = this.articlesService
-      .getArticles$();
-      // .subscribe(result => {
-      //   this.articles = result.articles;
-      //   this.collectionSize = result.collectionSize;
-      // });
+  paginate (page: number) {
+    this.pageOptions.index = page;
+    this.store.dispatch(new ArticlesActions.ArticlesListRequested({
+      pageOptions: { ...this.pageOptions }
+    }));
   }
 
   openModal(article: Article | null): void {
@@ -102,7 +106,11 @@ export class ArticleListComponent implements OnInit {
 
   onDelete(event: Article) {
     this.articlesService.deleteArticle$(event._id).subscribe(() => {
-      this.getArticles();
+      this.store.dispatch(
+        new ArticlesActions.ArticlesListRequested({
+          pageOptions: { ...this.pageOptions }
+        })
+      );
     });
   }
 }
