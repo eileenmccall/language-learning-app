@@ -1,4 +1,4 @@
 export class PageOptions {
-  public size: number = 2;
-  public index: number = 1;
+  public pageSize: number = 2;
+  public pageIndex: number = 1;
 }

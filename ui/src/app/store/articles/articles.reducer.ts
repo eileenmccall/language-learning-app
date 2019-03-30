@@ -11,6 +11,13 @@ export function articlesReducer(
     case ArticlesActionTypes.ArticleLoaded:
       return adapter.addOne(action.payload.article, state);
 
+    case ArticlesActionTypes.UpdateArticlesListPageOptions:
+      return {
+        ...state,
+        pageIndex: action.payload.index ? action.payload.index : state.pageIndex,
+        pageSize: action.payload.size ? action.payload.size : state.pageSize
+      };
+
     case ArticlesActionTypes.ArticlesListLoaded:
       adapter.removeAll({...state, loaded: false});
       return adapter.addAll(action.payload.data.data, {

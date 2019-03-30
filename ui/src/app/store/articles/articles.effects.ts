@@ -9,15 +9,17 @@ import {
   ArticleCreateRequested,
   ArticleCreateSuccess,
   ArticleUpdateRequested,
-  ArticleUpdateSuccess
+  ArticleUpdateSuccess,
+  UpdateArticlesListPageOptions
 } from './articles.actions';
 import { mergeMap, map, withLatestFrom, filter, merge } from 'rxjs/operators';
 import { ArticlesService } from '@app/articles/services/articles.service';
 import { Article } from '@app/articles/models/article.model';
 import { Store, select } from '@ngrx/store';
 import { State } from '../app-store.state';
-import { articlesListLoaded } from './articles.selectors';
+import { articlesListLoaded, selectPageOptions } from './articles.selectors';
 import { GridData } from '@app/shared/models/grid-data.model';
+import { PageOptions } from '@app/shared/models/pageOptions.model';
 
 @Injectable()
 export class ArticlesEffects {
@@ -36,12 +38,24 @@ export class ArticlesEffects {
   @Effect()
   loadArticlesList$ = this.actions$.pipe(
     ofType<ArticlesListRequested>(ArticlesActionTypes.ArticlesListRequested)
-  ).pipe(mergeMap((action: ArticlesListRequested) => {
-      return this.articlesService.getArticles$(action.payload.pageOptions);
+  ).pipe(
+    withLatestFrom(this.store.select(selectPageOptions))
+  ).pipe(
+    mergeMap(([action, pageOptions]: [ArticlesListRequested, {pageSize: number, pageIndex: number}]) => {
+      return this.articlesService.getArticles$(pageOptions.pageSize, pageOptions.pageIndex);
     })
   ).pipe(
     map((gridData: GridData<Article>) => {
       return new ArticlesListLoaded({data: gridData});
+    })
+  );
+
+  @Effect()
+  updatePageOptions$ = this.actions$.pipe(
+    ofType<UpdateArticlesListPageOptions>(ArticlesActionTypes.UpdateArticlesListPageOptions)
+  ).pipe(
+    map((action) => {
+      return new ArticlesListRequested();
     })
   );
 

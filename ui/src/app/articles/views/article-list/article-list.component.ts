@@ -30,17 +30,14 @@ export class ArticleListComponent implements OnInit {
   // pageSize = 2;
   // currentPage = 1;
   // collectionSize = 3;
-  public pageOptions = new PageOptions();
+  pageOptions: Observable<PageOptions>;
 
   articles: Observable<Array<Article>>;
   collectionSize: Observable<number>;
 
   ngOnInit() {
-    console.log(this.pageOptions);
     this.store.dispatch(
-      new ArticlesActions.ArticlesListRequested({
-        pageOptions: {...this.pageOptions}
-      })
+      new ArticlesActions.ArticlesListRequested()
     );
 
     this.articles = this.store
@@ -49,15 +46,16 @@ export class ArticleListComponent implements OnInit {
     this.collectionSize = this.store.pipe(
       select(ArticlesSelectors.selectCollectionSize)
     );
+
+    this.pageOptions = this.store.pipe(
+      select(ArticlesSelectors.selectPageOptions)
+    );
     // this.articles = this.route.snapshot.data['data'].articles;
     // this.collectionSize = this.route.snapshot.data['data'].collectionSize;
   }
 
   paginate (page: number) {
-    this.pageOptions.index = page;
-    this.store.dispatch(new ArticlesActions.ArticlesListRequested({
-      pageOptions: { ...this.pageOptions }
-    }));
+    this.store.dispatch(new ArticlesActions.UpdateArticlesListPageOptions({index: page}));
   }
 
   openModal(article: Article | null): void {
@@ -107,9 +105,7 @@ export class ArticleListComponent implements OnInit {
   onDelete(event: Article) {
     this.articlesService.deleteArticle$(event._id).subscribe(() => {
       this.store.dispatch(
-        new ArticlesActions.ArticlesListRequested({
-          pageOptions: { ...this.pageOptions }
-        })
+        new ArticlesActions.ArticlesListRequested()
       );
     });
   }

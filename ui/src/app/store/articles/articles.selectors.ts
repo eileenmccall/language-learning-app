@@ -17,6 +17,11 @@ export const selectCollectionSize = createSelector(
   state => state.collectionSize
 );
 
+export const selectPageOptions = createSelector(
+  selectArticlesState,
+  state => ({pageSize: state.pageSize, pageIndex: state.pageIndex})
+);
+
 export const selectArticlesList = createSelector(
   selectArticlesState,
   selectAll

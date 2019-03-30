@@ -14,8 +14,8 @@ interface Result {
 export class ArticlesService {
   constructor(private httpClient: HttpClient) {}
 
-  getArticles$(pageOptions: PageOptions): Observable<GridData<Article>> {
-    const queryParams = `?pageSize=${pageOptions.size}&currentPage=${pageOptions.index}`;
+  getArticles$(pageSize: number, pageIndex: number): Observable<GridData<Article>> {
+    const queryParams = `?pageSize=${pageSize}&currentPage=${pageIndex}`;
     return this.httpClient.get<GridData<Article>>(
       'http://localhost:3000/articles' + queryParams
     );

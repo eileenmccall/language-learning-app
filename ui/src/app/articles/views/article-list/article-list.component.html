@@ -12,8 +12,8 @@
   <div class="row">
     <div class="col-12">
       <ngb-pagination
-        [page]="pageOptions.index"
-        [pageSize]="pageOptions.size"
+        [page]="(pageOptions | async).pageIndex"
+        [pageSize]="(pageOptions | async).pageSize"
         [collectionSize]="collectionSize | async"
         (pageChange)="paginate($event)"
       ></ngb-pagination>

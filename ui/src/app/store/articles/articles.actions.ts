@@ -7,8 +7,10 @@ import { GridData } from '@app/shared/models/grid-data.model';
 export enum ArticlesActionTypes {
   ArticleRequested = '[Article List] ARTICLE_REQUESTED',
   ArticleLoaded = '[Articles Service] ARTICLE_LOADED',
+
   ArticlesListRequested = '[Articles List] ARTICLES_LIST_REQUESTED',
   ArticlesListLoaded = '[Articles Service] ARTICLES_LIST_LOADED',
+  UpdateArticlesListPageOptions = '[Articles List] UPDATE_ARTICLES_LIST_PAGE_OPTIONS',
 
   ArticleCreateRequested = '[Articles List] ARTICLE_CREATE_REQUESTED',
   ArticleCreateSuccess = '[Articles Service] ARTICLE_CREATE_SUCCESS',
@@ -31,14 +33,18 @@ export class ArticleLoaded implements Action {
 
 export class ArticlesListRequested implements Action {
   readonly type = ArticlesActionTypes.ArticlesListRequested;
-
-  constructor (public payload: { pageOptions: PageOptions }) {}
 }
 
 export class ArticlesListLoaded implements Action {
   readonly type = ArticlesActionTypes.ArticlesListLoaded;
 
   constructor (public payload: { data: GridData<Article> }) {}
+}
+
+export class UpdateArticlesListPageOptions implements Action {
+  readonly type = ArticlesActionTypes.UpdateArticlesListPageOptions;
+
+  constructor (public payload: { size?: number, index?: number }) {}
 }
 
 export class ArticleCreateRequested implements Action {
@@ -70,6 +76,7 @@ export type ArticlesActions =
   ArticleLoaded |
   ArticlesListRequested |
   ArticlesListLoaded |
+  UpdateArticlesListPageOptions |
   ArticleCreateRequested |
   ArticleCreateSuccess |
   ArticleUpdateRequested |
