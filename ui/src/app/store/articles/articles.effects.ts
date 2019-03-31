@@ -1,52 +1,62 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import {
-  ArticleRequested,
+  LoadArticleRequested,
   ArticlesActionTypes,
-  ArticleLoaded,
-  ArticlesListRequested,
-  ArticlesListLoaded,
+  LoadArticleSuccess,
+  LoadArticlesListRequested,
+  LoadArticlesListSuccess,
   ArticleCreateRequested,
   ArticleCreateSuccess,
   ArticleUpdateRequested,
   ArticleUpdateSuccess,
-  UpdateArticlesListPageOptions
+  UpdateArticlesListPageOptions,
+  LoadArticlesListFailure
 } from './articles.actions';
-import { mergeMap, map, withLatestFrom, filter, merge } from 'rxjs/operators';
+import { mergeMap, map, withLatestFrom, filter, merge, catchError } from 'rxjs/operators';
 import { ArticlesService } from '@app/articles/services/articles.service';
 import { Article } from '@app/articles/models/article.model';
 import { Store, select } from '@ngrx/store';
 import { State } from '../app-store.state';
 import { articlesListLoaded, selectPageOptions } from './articles.selectors';
 import { GridData } from '@app/shared/models/grid-data.model';
-import { PageOptions } from '@app/shared/models/pageOptions.model';
+import { PageOptions } from '@app/shared/models/pageOptions.interface';
+import { of } from 'rxjs';
 
 @Injectable()
 export class ArticlesEffects {
 
   @Effect()
   loadArticle$ = this.actions$.pipe(
-    ofType<ArticleRequested>(ArticlesActionTypes.ArticleRequested)
+    ofType<LoadArticleRequested>(ArticlesActionTypes.LoadArticleRequested)
   ).pipe(
-    mergeMap((action: ArticleRequested) => {
+    mergeMap((action: LoadArticleRequested) => {
       return this.articlesService.getArticleById$(action.payload.articleId);
     })
   ).pipe(
-    map(article => new ArticleLoaded({article: article}))
+    map(article => new LoadArticleSuccess({article: article}))
   );
 
   @Effect()
   loadArticlesList$ = this.actions$.pipe(
-    ofType<ArticlesListRequested>(ArticlesActionTypes.ArticlesListRequested)
+    ofType<LoadArticlesListRequested>(ArticlesActionTypes.LoadArticlesListRequested)
   ).pipe(
     withLatestFrom(this.store.select(selectPageOptions))
   ).pipe(
-    mergeMap(([action, pageOptions]: [ArticlesListRequested, {pageSize: number, pageIndex: number}]) => {
-      return this.articlesService.getArticles$(pageOptions.pageSize, pageOptions.pageIndex);
+    mergeMap(([action, pageOptions]: [LoadArticlesListRequested, PageOptions]) => {
+      return this.articlesService.getArticles$(
+        pageOptions.pageSize,
+        pageOptions.pageIndex
+      ).pipe(
+        catchError((err: any) => {
+          this.store.dispatch(new LoadArticlesListFailure(err));
+          return of(new GridData<Article>());
+        }
+      ));
     })
   ).pipe(
     map((gridData: GridData<Article>) => {
-      return new ArticlesListLoaded({data: gridData});
+      return new LoadArticlesListSuccess({data: gridData});
     })
   );
 
@@ -55,7 +65,7 @@ export class ArticlesEffects {
     ofType<UpdateArticlesListPageOptions>(ArticlesActionTypes.UpdateArticlesListPageOptions)
   ).pipe(
     map((action) => {
-      return new ArticlesListRequested();
+      return new LoadArticlesListRequested();
     })
   );
 

@@ -9,7 +9,7 @@ import { FileUploadService } from '@app/shared/services/file-upload.service';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { AppState, ArticlesActions, ArticlesSelectors } from '@app/store';
-import { PageOptions } from '@app/shared/models/pageOptions.model';
+import { PageOptions } from '@app/shared/models/pageOptions.interface';
 
 @Component({
   selector: 'app-article-list',
@@ -37,7 +37,7 @@ export class ArticleListComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(
-      new ArticlesActions.ArticlesListRequested()
+      new ArticlesActions.LoadArticlesListRequested()
     );
 
     this.articles = this.store
@@ -105,7 +105,7 @@ export class ArticleListComponent implements OnInit {
   onDelete(event: Article) {
     this.articlesService.deleteArticle$(event._id).subscribe(() => {
       this.store.dispatch(
-        new ArticlesActions.ArticlesListRequested()
+        new ArticlesActions.LoadArticlesListRequested()
       );
     });
   }

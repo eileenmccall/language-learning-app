@@ -1,4 +1,4 @@
 export class GridData <T> {
-  data: Array<T>;
-  collectionSize: number;
+  data: Array<T> = [];
+  collectionSize: number = 0;
 }

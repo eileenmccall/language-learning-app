@@ -8,7 +8,7 @@ export function articlesReducer(
 ): ArticlesState {
   switch (action.type) {
 
-    case ArticlesActionTypes.ArticleLoaded:
+    case ArticlesActionTypes.LoadArticleSuccess:
       return adapter.addOne(action.payload.article, state);
 
     case ArticlesActionTypes.UpdateArticlesListPageOptions:
@@ -18,12 +18,19 @@ export function articlesReducer(
         pageSize: action.payload.size ? action.payload.size : state.pageSize
       };
 
-    case ArticlesActionTypes.ArticlesListLoaded:
+    case ArticlesActionTypes.LoadArticlesListSuccess:
       adapter.removeAll({...state, loaded: false});
       return adapter.addAll(action.payload.data.data, {
         ...state,
         collectionSize: action.payload.data.collectionSize,
         loaded: true
+      });
+
+    case ArticlesActionTypes.LoadArticlesListFailure:
+      return adapter.removeAll({
+        ...state,
+        loaded: true,
+        error: action.payload.error
       });
 
     case ArticlesActionTypes.ArticleCreateSuccess:

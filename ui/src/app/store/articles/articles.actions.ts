@@ -1,44 +1,58 @@
 import { Action } from '@ngrx/store';
 import { Article } from '@app/articles/models/article.model';
 import { Update } from '@ngrx/entity';
-import { PageOptions } from '@app/shared/models/pageOptions.model';
 import { GridData } from '@app/shared/models/grid-data.model';
 
 export enum ArticlesActionTypes {
-  ArticleRequested = '[Article List] ARTICLE_REQUESTED',
-  ArticleLoaded = '[Articles Service] ARTICLE_LOADED',
+  LoadArticleRequested = '[Article List] LOAD_ARTICLE_REQUESTED',
+  LoadArticleSuccess = '[Articles Service] LOAD_ARTICLE_SUCCESS',
+  LoadArticleFailure = '[Articles Service] LOAD_ARTICLE_FAILURE',
 
-  ArticlesListRequested = '[Articles List] ARTICLES_LIST_REQUESTED',
-  ArticlesListLoaded = '[Articles Service] ARTICLES_LIST_LOADED',
+  LoadArticlesListRequested = '[Articles List] LOAD_ARTICLES_LIST_REQUESTED',
+  LoadArticlesListSuccess = '[Articles Service] LOAD_ARTICLES_LIST_SUCCESS',
+  LoadArticlesListFailure = '[Articles Service] LOAD_ARTICLES_LIST_FAILURE',
+
   UpdateArticlesListPageOptions = '[Articles List] UPDATE_ARTICLES_LIST_PAGE_OPTIONS',
 
   ArticleCreateRequested = '[Articles List] ARTICLE_CREATE_REQUESTED',
   ArticleCreateSuccess = '[Articles Service] ARTICLE_CREATE_SUCCESS',
+  ArticleCreateFailure = '[Articles Service] ARTICLE_CREATE_FAILURE',
 
   ArticleUpdateRequested = '[Articles List] ARTICLE_UPDATE_REQUESTED',
-  ArticleUpdateSuccess = '[Articles Service] ARTICLE_UPDATE_SUCCESS'
+  ArticleUpdateSuccess = '[Articles Service] ARTICLE_UPDATE_SUCCESS',
+  ArticleUpdateFailure = '[Articles Service] ARTICLE_UPDATE_FAILURE',
+
+  ArticleDeleteRequested = '[Articles List] ARTICLE_DELETE_REQUESTED',
+  ArticleDeleteSuccess = '[Articles Service] ARTICLE_DELETE_SUCCESS',
+  ArticleDeleteFailure = '[Articles Service] ARTICLE_DELETE_FAILURE'
 }
 
-export class ArticleRequested implements Action {
-  readonly type = ArticlesActionTypes.ArticleRequested;
+export class LoadArticleRequested implements Action {
+  readonly type = ArticlesActionTypes.LoadArticleRequested;
 
-  constructor (public payload: {articleId: string}) {}
+  constructor (public payload: { articleId: string }) {}
 }
 
-export class ArticleLoaded implements Action {
-  readonly type = ArticlesActionTypes.ArticleLoaded;
+export class LoadArticleSuccess implements Action {
+  readonly type = ArticlesActionTypes.LoadArticleSuccess;
 
   constructor (public payload: { article: Article }) {}
 }
 
-export class ArticlesListRequested implements Action {
-  readonly type = ArticlesActionTypes.ArticlesListRequested;
+export class LoadArticlesListRequested implements Action {
+  readonly type = ArticlesActionTypes.LoadArticlesListRequested;
 }
 
-export class ArticlesListLoaded implements Action {
-  readonly type = ArticlesActionTypes.ArticlesListLoaded;
+export class LoadArticlesListSuccess implements Action {
+  readonly type = ArticlesActionTypes.LoadArticlesListSuccess;
 
   constructor (public payload: { data: GridData<Article> }) {}
+}
+
+export class LoadArticlesListFailure implements Action {
+  readonly type = ArticlesActionTypes.LoadArticlesListFailure;
+
+  constructor (public payload: { error: any }) {}
 }
 
 export class UpdateArticlesListPageOptions implements Action {
@@ -72,10 +86,11 @@ export class ArticleUpdateSuccess implements Action {
 }
 
 export type ArticlesActions =
-  ArticleRequested |
-  ArticleLoaded |
-  ArticlesListRequested |
-  ArticlesListLoaded |
+  LoadArticleRequested |
+  LoadArticleSuccess |
+  LoadArticlesListRequested |
+  LoadArticlesListSuccess |
+  LoadArticlesListFailure |
   UpdateArticlesListPageOptions |
   ArticleCreateRequested |
   ArticleCreateSuccess |

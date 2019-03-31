@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Article } from '../models/article.model';
-import { PageOptions } from '@app/shared/models/pageOptions.model';
+import { PageOptions } from '@app/shared/models/pageOptions.interface';
 import { GridData } from '@app/shared/models/grid-data.model';
 
 interface Result {
