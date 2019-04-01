@@ -20,13 +20,12 @@ export class ArticleDetailsResolver implements Resolve<Article> {
 
     return this.store
       .pipe(select(ArticlesSelectors.selectArticleById(id)))
-      .pipe(tap((article: Article | undefined) => {
+      .pipe(tap((article: Article) => {
         if (!article) {
-          this.store.dispatch(new ArticlesActions.ArticleRequested({articleId: id}));
+          this.store.dispatch(new ArticlesActions.LoadArticleRequested({articleId: id}));
         }
       })) // If article doesn't exist in store, call service
       .pipe(filter(article => !!article)) // Only emit if article exists
       .pipe(first()); // Terminate observable on first value
-    return this.articlesService.getArticleById$(route.paramMap.get('id'));
   }
 }
