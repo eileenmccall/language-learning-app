@@ -25,10 +25,11 @@ export function articlesReducer(
         pageSize: action.payload.size ? action.payload.size : state.pageSize
       };
 
-    case ArticlesActionTypes.LoadArticlesListRequested:
-      return adapter.removeAll({...state, loaded: false});
-
     case ArticlesActionTypes.LoadArticlesListSuccess:
+      adapter.removeAll({
+        ...state,
+        loaded: false
+      });
       return adapter.addAll(action.payload.data.data, {
         ...state,
         collectionSize: action.payload.data.collectionSize,
@@ -36,17 +37,14 @@ export function articlesReducer(
       });
 
     case ArticlesActionTypes.LoadArticlesListFailure:
+    case ArticlesActionTypes.ArticleCreateFailure:
+    case ArticlesActionTypes.ArticleUpdateFailure:
+    case ArticlesActionTypes.ArticleDeleteFailure:
       return {
         ...state,
         loaded: true,
         error: action.payload.error
       };
-
-    case ArticlesActionTypes.ArticleCreateSuccess:
-      return adapter.addOne(action.payload.article, state);
-
-    case ArticlesActionTypes.ArticleUpdateSuccess:
-      return adapter.updateOne(action.payload.article, state);
 
     default:
       return state;
