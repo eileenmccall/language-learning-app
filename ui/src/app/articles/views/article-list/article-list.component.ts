@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { AppState, ArticlesActions, ArticlesSelectors } from '@app/store';
 import { PageOptions } from '@app/shared/models/pageOptions.interface';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-article-list',
@@ -34,12 +35,9 @@ export class ArticleListComponent implements OnInit {
 
   articles: Observable<Array<Article>>;
   collectionSize: Observable<number>;
+  error: Observable<any>;
 
   ngOnInit() {
-    this.store.dispatch(
-      new ArticlesActions.LoadArticlesListRequested()
-    );
-
     this.articles = this.store
       .pipe(select(ArticlesSelectors.selectArticlesList));
 
@@ -49,6 +47,16 @@ export class ArticleListComponent implements OnInit {
 
     this.pageOptions = this.store.pipe(
       select(ArticlesSelectors.selectPageOptions)
+    );
+
+    this.error = this.store.pipe(
+      select(ArticlesSelectors.selectError)
+    ).pipe(
+      tap(err => {
+        if (!!err) {
+          console.log(err);
+        }
+      })
     );
     // this.articles = this.route.snapshot.data['data'].articles;
     // this.collectionSize = this.route.snapshot.data['data'].collectionSize;

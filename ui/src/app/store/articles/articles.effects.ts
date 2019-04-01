@@ -11,14 +11,17 @@ import {
   ArticleUpdateRequested,
   ArticleUpdateSuccess,
   UpdateArticlesListPageOptions,
-  LoadArticlesListFailure
+  LoadArticlesListFailure,
+  ArticleCreateFailure,
+  ArticleUpdateFailure,
+  LoadArticleFailure
 } from './articles.actions';
 import { mergeMap, map, withLatestFrom, filter, merge, catchError } from 'rxjs/operators';
 import { ArticlesService } from '@app/articles/services/articles.service';
 import { Article } from '@app/articles/models/article.model';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { State } from '../app-store.state';
-import { articlesListLoaded, selectPageOptions } from './articles.selectors';
+import { selectPageOptions } from './articles.selectors';
 import { GridData } from '@app/shared/models/grid-data.model';
 import { PageOptions } from '@app/shared/models/pageOptions.interface';
 import { of } from 'rxjs';
@@ -26,15 +29,26 @@ import { of } from 'rxjs';
 @Injectable()
 export class ArticlesEffects {
 
+  constructor(
+    private actions$: Actions,
+    private articlesService: ArticlesService,
+    private store: Store<State>
+  ) {}
+
   @Effect()
   loadArticle$ = this.actions$.pipe(
     ofType<LoadArticleRequested>(ArticlesActionTypes.LoadArticleRequested)
   ).pipe(
     mergeMap((action: LoadArticleRequested) => {
-      return this.articlesService.getArticleById$(action.payload.articleId);
+      return this.articlesService.getArticleById$(action.payload.articleId).pipe(
+        map(article => new LoadArticleSuccess({article: article}))
+      ).pipe(
+        catchError((err: any) => {
+          this.store.dispatch(new LoadArticleFailure({ error: err }));
+          return of({});
+        })
+      );
     })
-  ).pipe(
-    map(article => new LoadArticleSuccess({article: article}))
   );
 
   @Effect()
@@ -48,15 +62,14 @@ export class ArticlesEffects {
         pageOptions.pageSize,
         pageOptions.pageIndex
       ).pipe(
+        map((gridData: GridData<Article>) => {
+          return new LoadArticlesListSuccess({data: gridData});
+        })
+      ).pipe(
         catchError((err: any) => {
-          this.store.dispatch(new LoadArticlesListFailure(err));
-          return of(new GridData<Article>());
+          return of(new LoadArticlesListFailure({ error: err }));
         }
       ));
-    })
-  ).pipe(
-    map((gridData: GridData<Article>) => {
-      return new LoadArticlesListSuccess({data: gridData});
     })
   );
 
@@ -64,7 +77,7 @@ export class ArticlesEffects {
   updatePageOptions$ = this.actions$.pipe(
     ofType<UpdateArticlesListPageOptions>(ArticlesActionTypes.UpdateArticlesListPageOptions)
   ).pipe(
-    map((action) => {
+    map(() => {
       return new LoadArticlesListRequested();
     })
   );
@@ -74,12 +87,16 @@ export class ArticlesEffects {
     ofType<ArticleCreateRequested>(ArticlesActionTypes.ArticleCreateRequested)
   ).pipe(
     mergeMap((action: ArticleCreateRequested) => {
-      return this.articlesService.addArticle$(action.payload.article);
+      return this.articlesService.addArticle$(action.payload.article).pipe(
+        map(article => new ArticleCreateSuccess({
+          article: article
+        }))
+      ).pipe(
+        catchError((err: any) => {
+          return of(new ArticleCreateFailure({error: err}));
+        })
+      );
     })
-  ).pipe(
-    map(article => new ArticleCreateSuccess({
-      article: article
-    }))
   );
 
   @Effect()
@@ -87,22 +104,20 @@ export class ArticlesEffects {
     ofType<ArticleUpdateRequested>(ArticlesActionTypes.ArticleUpdateRequested)
   ).pipe(
     mergeMap((action: ArticleUpdateRequested) => {
-      return this.articlesService.editArticle$(action.payload.article);
-    })
-  ).pipe(
-    map((article) => {
-      return new ArticleUpdateSuccess({
-        article: {
-          id: article._id,
-          changes: article
-        }
-      });
+      return this.articlesService.editArticle$(action.payload.article).pipe(
+        map((article) => {
+          return new ArticleUpdateSuccess({
+            article: {
+              id: article._id,
+              changes: article
+            }
+          });
+        })
+      ).pipe(
+        catchError((err: any) => {
+          return of(new ArticleUpdateFailure({ error: err }));
+        })
+      );
     })
   );
-
-  constructor(
-    private actions$: Actions,
-    private articlesService: ArticlesService,
-    private store: Store<State>
-  ) {}
 }

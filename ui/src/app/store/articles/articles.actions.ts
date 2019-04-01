@@ -39,6 +39,12 @@ export class LoadArticleSuccess implements Action {
   constructor (public payload: { article: Article }) {}
 }
 
+export class LoadArticleFailure implements Action {
+  readonly type = ArticlesActionTypes.LoadArticleFailure;
+
+  constructor (public payload: { error: any }) {}
+}
+
 export class LoadArticlesListRequested implements Action {
   readonly type = ArticlesActionTypes.LoadArticlesListRequested;
 }
@@ -73,6 +79,12 @@ export class ArticleCreateSuccess implements Action {
   constructor (public payload: { article: Article}) {}
 }
 
+export class ArticleCreateFailure implements Action {
+  readonly type = ArticlesActionTypes.ArticleCreateFailure;
+
+  constructor (public payload: { error: any }) {}
+}
+
 export class ArticleUpdateRequested implements Action {
   readonly type = ArticlesActionTypes.ArticleUpdateRequested;
 
@@ -85,14 +97,23 @@ export class ArticleUpdateSuccess implements Action {
   constructor (public payload: { article: Update<Article> }) {}
 }
 
+export class ArticleUpdateFailure implements Action {
+  readonly type = ArticlesActionTypes.ArticleUpdateFailure;
+
+  constructor (public payload: { error: any }) {}
+}
+
 export type ArticlesActions =
   LoadArticleRequested |
   LoadArticleSuccess |
+  LoadArticleFailure |
   LoadArticlesListRequested |
   LoadArticlesListSuccess |
   LoadArticlesListFailure |
   UpdateArticlesListPageOptions |
   ArticleCreateRequested |
   ArticleCreateSuccess |
+  ArticleCreateFailure |
   ArticleUpdateRequested |
-  ArticleUpdateSuccess;
+  ArticleUpdateSuccess |
+  ArticleUpdateFailure;

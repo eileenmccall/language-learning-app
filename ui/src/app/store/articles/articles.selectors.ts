@@ -31,3 +31,13 @@ export const articlesListLoaded = createSelector(
   selectArticlesState,
   state => state.loaded
 );
+
+export const selectError = createSelector(
+  selectArticlesState,
+  state => state.error
+);
+
+export const selectArticlesLoaded = createSelector(
+  selectArticlesState,
+  state => state.loaded
+);

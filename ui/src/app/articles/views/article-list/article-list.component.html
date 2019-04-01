@@ -1,4 +1,12 @@
 <div class="container">
+  <div class="row mb-3" *ngIf="error | async">
+    <div class="col-12">
+      <div class="alert alert-danger">
+        Something went wrong!
+      </div>
+    </div>
+  </div>
+
   <div class="row mb-3">
     <div class="col-12">
       <button class="btn btn-primary" (click)="openModal()">Add Article</button>
