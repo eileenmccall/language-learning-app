@@ -56,7 +56,7 @@ function login (email, password) {
         user.token = token;
         return user.save();
     }).then(user => {
-        return token;
+        return user;
     }).catch(error => {
         throw new Error('Authentication failed');
     });

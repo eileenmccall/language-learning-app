@@ -7,6 +7,10 @@ import { EditArticleModalComponent } from '../../components/edit-article-modal/e
 import { ModalResult } from '@app/articles/models/modal-result.model';
 import { FileUploadService } from '@app/shared/services/file-upload.service';
 import { ActivatedRoute } from '@angular/router';
+import { Store, select } from '@ngrx/store';
+import { AppState, ArticlesActions, ArticlesSelectors } from '@app/store';
+import { PageOptions } from '@app/shared/models/pageOptions.interface';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-article-list',
@@ -18,37 +22,48 @@ export class ArticleListComponent implements OnInit {
     private articlesService: ArticlesService,
     private modalService: NgbModal,
     private fileUploadService: FileUploadService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private store: Store<AppState.State>
   ) {}
 
-  public articles: Array<Article>;
-  pageSize = 2;
-  currentPage = 1;
-  collectionSize = 3;
+  // ignoring pagination stuff for now
+
+  // pageSize = 2;
+  // currentPage = 1;
+  // collectionSize = 3;
+  pageOptions: Observable<PageOptions>;
+
+  articles: Observable<Array<Article>>;
+  collectionSize: Observable<number>;
+  error: Observable<any>;
 
   ngOnInit() {
-    this.articles = this.route.snapshot.data['data'].articles;
-    this.collectionSize = this.route.snapshot.data['data'].collectionSize;
+    this.articles = this.store
+      .pipe(select(ArticlesSelectors.selectArticlesList));
+
+    this.collectionSize = this.store.pipe(
+      select(ArticlesSelectors.selectCollectionSize)
+    );
+
+    this.pageOptions = this.store.pipe(
+      select(ArticlesSelectors.selectPageOptions)
+    );
+
+    this.error = this.store.pipe(
+      select(ArticlesSelectors.selectError)
+    ).pipe(
+      tap(err => {
+        if (!!err) {
+          console.log(err);
+        }
+      })
+    );
+    // this.articles = this.route.snapshot.data['data'].articles;
+    // this.collectionSize = this.route.snapshot.data['data'].collectionSize;
   }
 
   paginate (page: number) {
-    this.currentPage = page;
-    this.getArticles();
-  }
-
-  private getArticles(): void {
-    this.articlesService
-      .getArticles$(this.pageSize, this.currentPage)
-      .subscribe(result => {
-        this.articles = result.articles;
-        this.collectionSize = result.collectionSize;
-      });
-  }
-
-  addArticle(article: Article): void {
-    this.articlesService.addArticle$(article).subscribe(() => {
-      this.getArticles();
-    });
+    this.store.dispatch(new ArticlesActions.UpdateArticlesListPageOptions({index: page}));
   }
 
   openModal(article: Article | null): void {
@@ -61,28 +76,20 @@ export class ArticleListComponent implements OnInit {
 
     modalRef.result.then(
       (result: ModalResult | null) => {
-        if (result && result.file) {
-          this.fileUploadService
-            .uploadFile$(result.title, result.file)
-            .subscribe(fileUrl => {
-              if (fileUrl && article) {
-                this.editArticle({
-                  ...result,
-                  imageUrl: fileUrl
-                } as Article);
-              } else if (fileUrl) {
-                this.addArticle({
-                  ...result,
-                  imageUrl: fileUrl
-                } as Article);
-              }
+        if (!result) { return; }
+
+        const newArticle = {
+          ...result.article
+        } as Article;
+
+        if (result.imageUpdated) {
+          this.fileUploadService.uploadFile$(result.article.title, result.article.file)
+            .subscribe((imageUrl: string) => {
+              newArticle.imageUrl = imageUrl;
+              this.editArticle(newArticle);
             });
-        } else if (result) {
-          if (article) {
-            this.editArticle(result as Article);
-          } else {
-            this.addArticle(result as Article);
-          }
+        } else {
+          this.editArticle(newArticle);
         }
       },
       (result: any) => {
@@ -92,14 +99,20 @@ export class ArticleListComponent implements OnInit {
   }
 
   editArticle(article: Article): void {
-    this.articlesService.editArticle$(article).subscribe(() => {
-      this.getArticles();
-    });
+    if (article._id) {
+      this.store.dispatch(new ArticlesActions.ArticleUpdateRequested({
+        article: article
+      }));
+    } else {
+      this.store.dispatch(new ArticlesActions.ArticleCreateRequested({
+        article: article
+      }));
+    }
   }
 
-  onDelete(event: Article) {
-    this.articlesService.deleteArticle$(event._id).subscribe(() => {
-      this.getArticles();
-    });
+  onDelete(article: Article) {
+    this.store.dispatch(new ArticlesActions.ArticleDeleteRequested({
+      articleId: article._id
+    }));
   }
 }

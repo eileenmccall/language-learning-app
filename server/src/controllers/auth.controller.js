@@ -29,9 +29,7 @@ router.post('/register', (req, res, next) => {
 });
 
 router.post('/login', auth.require_basic, (req, res, next) => {
-    return res.status(200).json({
-        token: req.token
-    });
+    return res.status(200).json(req.user);
 });
 
 router.post('/logout', auth.require_auth, (req, res, next) => {

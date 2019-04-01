@@ -17,6 +17,7 @@ export class EditArticleModalComponent implements OnInit, OnChanges {
 
   form: FormGroup;
   filePreview: string;
+  imageUpdated = false;
 
   ngOnInit() {
     this.createFormGroup();
@@ -43,6 +44,7 @@ export class EditArticleModalComponent implements OnInit, OnChanges {
   }
 
   onImageSelected(event: Event) {
+    this.imageUpdated = true;
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({image: file});
     this.form.get('image').updateValueAndValidity();
@@ -59,11 +61,15 @@ export class EditArticleModalComponent implements OnInit, OnChanges {
 
   save(): void {
     const result = new ModalResult();
-    result._id = this.article ? this.article._id : null;
-    result.title = this.form.value.title;
-    result.excerpt = this.form.value.excerpt;
-    result.body = this.form.value.body;
-    result.file = this.form.value.image;
+
+    result.imageUpdated = this.imageUpdated;
+    result.article = {
+      _id: this.article ? this.article._id : null,
+      title: this.form.value.title,
+      excerpt: this.form.value.excerpt,
+      body: this.form.value.body,
+      file: this.form.value.image
+    };
 
     this.modal.close(result);
   }

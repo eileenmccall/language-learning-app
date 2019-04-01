@@ -25,12 +25,26 @@ router.get("",
             })
             .then(count => {
                 res.status(200).json({
-                    articles: documents,
+                    data: documents,
                     collectionSize: count
                 });
             });
     }
 );
+
+router.get("/:id",
+    auth.require_auth,
+    (req, res, next) => {
+        Article.findById(req.params.id)
+            .then((article) => {
+                res.status(200).json(article)
+            }, (err) => {
+                res.status(500).json({
+                    message: err
+                })
+            });
+    }
+)
 
 router.post("",
     auth.require_auth,
@@ -50,7 +64,7 @@ router.post("",
 router.put("/:id", 
     auth.require_auth, 
     (req, res, rext) => {
-        Article.findByIdAndUpdate(req.params.id, req.body)
+        Article.findByIdAndUpdate(req.params.id, req.body, {new: true})
             .then((document) => {
                 res.status(201).json(document);
             });

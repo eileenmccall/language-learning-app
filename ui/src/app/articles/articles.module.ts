@@ -14,15 +14,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditArticleModalComponent } from './components/edit-article-modal/edit-article-modal.component';
 import { SharedModule } from '@app/shared/shared.module';
-import { ArticlesResolver } from './routing/resolvers/articles.resolver';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '@app/core/interceptors/auth.interceptor';
+import { ArticleDetailsComponent } from './views/article-details/article-details.component';
+import { ArticleDetailsResolver } from './routing/resolvers/article-details.resolver';
+import { ArticlesComponent } from './views/articles/articles.component';
+import { ArticlesResolver } from './routing/resolvers/articles.resolver';
 
 @NgModule({
   declarations: [
     ArticleComponent,
     ArticleListComponent,
-    EditArticleModalComponent
+    EditArticleModalComponent,
+    ArticleDetailsComponent,
+    ArticlesComponent
   ],
   entryComponents: [EditArticleModalComponent],
   imports: [
@@ -36,6 +41,7 @@ import { AuthInterceptor } from '@app/core/interceptors/auth.interceptor';
   providers: [
     ArticlesService,
     ArticlesResolver,
+    ArticleDetailsResolver,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
