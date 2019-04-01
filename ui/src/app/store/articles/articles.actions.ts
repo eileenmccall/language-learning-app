@@ -103,6 +103,24 @@ export class ArticleUpdateFailure implements Action {
   constructor (public payload: { error: any }) {}
 }
 
+export class ArticleDeleteRequested implements Action {
+  readonly type = ArticlesActionTypes.ArticleDeleteRequested;
+
+  constructor (public payload: { articleId: string }) {}
+}
+
+export class ArticleDeleteSuccess implements Action {
+  readonly type = ArticlesActionTypes.ArticleDeleteSuccess;
+
+  constructor (public payload: { article: Article }) {}
+}
+
+export class ArticleDeleteFailure implements Action {
+  readonly type = ArticlesActionTypes.ArticleDeleteFailure;
+
+  constructor (public payload: { error: any }) {}
+}
+
 export type ArticlesActions =
   LoadArticleRequested |
   LoadArticleSuccess |
@@ -116,4 +134,7 @@ export type ArticlesActions =
   ArticleCreateFailure |
   ArticleUpdateRequested |
   ArticleUpdateSuccess |
-  ArticleUpdateFailure;
+  ArticleUpdateFailure |
+  ArticleDeleteRequested |
+  ArticleDeleteSuccess |
+  ArticleDeleteFailure;

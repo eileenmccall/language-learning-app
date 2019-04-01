@@ -110,11 +110,9 @@ export class ArticleListComponent implements OnInit {
     }
   }
 
-  onDelete(event: Article) {
-    this.articlesService.deleteArticle$(event._id).subscribe(() => {
-      this.store.dispatch(
-        new ArticlesActions.LoadArticlesListRequested()
-      );
-    });
+  onDelete(article: Article) {
+    this.store.dispatch(new ArticlesActions.ArticleDeleteRequested({
+      articleId: article._id
+    }));
   }
 }
