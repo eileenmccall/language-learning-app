@@ -1,37 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
-import {
-  LoadArticleRequested,
-  ArticlesActionTypes,
-  LoadArticleSuccess,
-  LoadArticlesListRequested,
-  LoadArticlesListSuccess,
-  ArticleCreateRequested,
-  ArticleCreateSuccess,
-  ArticleUpdateRequested,
-  ArticleUpdateSuccess,
-  UpdateArticlesListPageOptions,
-  LoadArticlesListFailure,
-  ArticleCreateFailure,
-  ArticleUpdateFailure,
-  LoadArticleFailure,
-  ArticleDeleteRequested,
-  ArticleDeleteSuccess,
-  ArticleDeleteFailure
-} from './articles.actions';
-import {
-  mergeMap,
-  map,
-  withLatestFrom,
-  filter,
-  merge,
-  catchError
-} from 'rxjs/operators';
+import { Actions, ofType, createEffect } from '@ngrx/effects';
+import * as ArticlesActions from './articles.actions';
+import { mergeMap, map, withLatestFrom, catchError } from 'rxjs/operators';
 import { ArticlesService } from '@app/articles/services/articles.service';
 import { Article } from '@app/articles/models/article.model';
 import { Store } from '@ngrx/store';
 import { State } from '@app/core/store/app-store.state';
-import { selectPageOptions, articlesListLoaded } from './articles.selectors';
+import { selectPageOptions } from './articles.selectors';
 import { GridData } from '@app/shared/models/grid-data.model';
 import { PageOptions } from '@app/shared/models/pageOptions.interface';
 import { of } from 'rxjs';
@@ -44,139 +19,111 @@ export class ArticlesEffects {
     private store: Store<State>
   ) {}
 
-  @Effect()
-  loadArticle$ = this.actions$
-    .pipe(
-      ofType<LoadArticleRequested>(ArticlesActionTypes.LoadArticleRequested)
-    )
-    .pipe(
-      mergeMap((action: LoadArticleRequested) => {
-        return this.articlesService
-          .getArticleById$(action.payload.articleId)
-          .pipe(map(article => new LoadArticleSuccess({ article: article })))
-          .pipe(
-            catchError((err: any) => {
-              this.store.dispatch(new LoadArticleFailure({ error: err }));
-              return of({});
-            })
-          );
-      })
-    );
-
-  @Effect()
-  loadArticlesList$ = this.actions$
-    .pipe(
-      filter(action => {
-        return (
-          action.type === ArticlesActionTypes.LoadArticlesListRequested ||
-          action.type === ArticlesActionTypes.ArticleCreateSuccess ||
-          action.type === ArticlesActionTypes.ArticleUpdateSuccess ||
-          action.type === ArticlesActionTypes.ArticleDeleteSuccess
+  loadArticle$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ArticlesActions.loadArticleRequested),
+      mergeMap(({ articleId }) => {
+        return this.articlesService.getArticleById$(articleId).pipe(
+          map((article: Article) =>
+            ArticlesActions.loadArticleSuccess({ article: article })
+          ),
+          catchError((err: any) => {
+            return of(ArticlesActions.loadArticleFailure({ error: err }));
+          })
         );
       })
     )
-    .pipe(withLatestFrom(this.store.select(selectPageOptions)))
-    .pipe(
+  );
+
+  loadArticlesList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        ArticlesActions.loadArticlesListRequested,
+        ArticlesActions.articleCreateSuccess,
+        ArticlesActions.articleUpdateSuccess,
+        ArticlesActions.articleDeleteSuccess
+      ),
+      withLatestFrom(this.store.select(selectPageOptions)),
       mergeMap(([action, pageOptions]: [any, PageOptions]) => {
         return this.articlesService
           .getArticles$(pageOptions.pageSize, pageOptions.pageIndex)
           .pipe(
             map((gridData: GridData<Article>) => {
-              return new LoadArticlesListSuccess({ data: gridData });
-            })
-          )
-          .pipe(
-            catchError((err: any) => {
-              return of(new LoadArticlesListFailure({ error: err }));
-            })
-          );
-      })
-    );
-
-  @Effect()
-  updatePageOptions$ = this.actions$
-    .pipe(
-      ofType<UpdateArticlesListPageOptions>(
-        ArticlesActionTypes.UpdateArticlesListPageOptions
-      )
-    )
-    .pipe(
-      map(() => {
-        return new LoadArticlesListRequested();
-      })
-    );
-
-  @Effect()
-  createArticle$ = this.actions$
-    .pipe(
-      ofType<ArticleCreateRequested>(ArticlesActionTypes.ArticleCreateRequested)
-    )
-    .pipe(
-      mergeMap((action: ArticleCreateRequested) => {
-        return this.articlesService
-          .addArticle$(action.payload.article)
-          .pipe(
-            map(
-              article =>
-                new ArticleCreateSuccess({
-                  article: article
-                })
-            )
-          )
-          .pipe(
-            catchError((err: any) => {
-              return of(new ArticleCreateFailure({ error: err }));
-            })
-          );
-      })
-    );
-
-  @Effect()
-  updateArticle$ = this.actions$
-    .pipe(
-      ofType<ArticleUpdateRequested>(ArticlesActionTypes.ArticleUpdateRequested)
-    )
-    .pipe(
-      mergeMap((action: ArticleUpdateRequested) => {
-        return this.articlesService
-          .editArticle$(action.payload.article)
-          .pipe(
-            map(article => {
-              return new ArticleUpdateSuccess({
-                article: {
-                  id: article._id,
-                  changes: article
-                }
+              return ArticlesActions.loadArticlesListSuccess({
+                data: gridData
               });
-            })
-          )
-          .pipe(
+            }),
             catchError((err: any) => {
-              return of(new ArticleUpdateFailure({ error: err }));
+              return of(
+                ArticlesActions.loadArticlesListFailure({ error: err })
+              );
             })
           );
       })
-    );
-
-  @Effect()
-  deleteArticle$ = this.actions$
-    .pipe(
-      ofType<ArticleDeleteRequested>(ArticlesActionTypes.ArticleDeleteRequested)
     )
-    .pipe(
-      mergeMap((action: ArticleDeleteRequested) => {
-        return this.articlesService
-          .deleteArticle$(action.payload.articleId)
-          .pipe(
-            map((article: Article) => {
-              return new ArticleDeleteSuccess({ article: article });
-            })
-          )
-          .pipe(
-            catchError((err: any) => {
-              return of(new ArticleDeleteFailure({ error: err }));
-            })
-          );
+  );
+
+  updatePageOptions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ArticlesActions.updateArticlesListPageOptions),
+      map(() => {
+        return ArticlesActions.loadArticlesListRequested();
       })
-    );
+    )
+  );
+
+  createArticle$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ArticlesActions.articleCreateRequested),
+      mergeMap(({ article }) => {
+        return this.articlesService.addArticle$(article).pipe(
+          map((createdArticle: Article) => {
+            return ArticlesActions.articleCreateSuccess({
+              article: createdArticle
+            });
+          }),
+          catchError((err: any) => {
+            return of(ArticlesActions.articleCreateFailure({ error: err }));
+          })
+        );
+      })
+    )
+  );
+
+  updateArticle$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ArticlesActions.articleUpdateRequested),
+      mergeMap(({ article }) => {
+        return this.articlesService.editArticle$(article).pipe(
+          map((updatedArticle: Article) => {
+            return ArticlesActions.articleUpdateSuccess({
+              article: {
+                id: updatedArticle._id,
+                changes: updatedArticle
+              }
+            });
+          }),
+          catchError((err: any) => {
+            return of(ArticlesActions.articleUpdateFailure({ error: err }));
+          })
+        );
+      })
+    )
+  );
+
+  deleteArticle$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ArticlesActions.articleDeleteRequested),
+      mergeMap(({ articleId }) => {
+        return this.articlesService.deleteArticle$(articleId).pipe(
+          map((article: Article) => {
+            return ArticlesActions.articleDeleteSuccess({ article: article });
+          }),
+          catchError((err: any) => {
+            return of(ArticlesActions.articleDeleteFailure({ error: err }));
+          })
+        );
+      })
+    )
+  );
 }

@@ -1,140 +1,83 @@
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { Article } from '@app/articles/models/article.model';
 import { Update } from '@ngrx/entity';
 import { GridData } from '@app/shared/models/grid-data.model';
 
-export enum ArticlesActionTypes {
-  LoadArticleRequested = '[Article List] LOAD_ARTICLE_REQUESTED',
-  LoadArticleSuccess = '[Articles Service] LOAD_ARTICLE_SUCCESS',
-  LoadArticleFailure = '[Articles Service] LOAD_ARTICLE_FAILURE',
+export const loadArticleRequested = createAction(
+  '[Article List] LOAD_ARTICLE_REQUESTED',
+  props<{ articleId: string }>()
+);
 
-  LoadArticlesListRequested = '[Articles List] LOAD_ARTICLES_LIST_REQUESTED',
-  LoadArticlesListSuccess = '[Articles Service] LOAD_ARTICLES_LIST_SUCCESS',
-  LoadArticlesListFailure = '[Articles Service] LOAD_ARTICLES_LIST_FAILURE',
+export const loadArticleSuccess = createAction(
+  '[Articles Service] LOAD_ARTICLE_SUCCESS',
+  props<{ article: Article }>()
+);
 
-  UpdateArticlesListPageOptions = '[Articles List] UPDATE_ARTICLES_LIST_PAGE_OPTIONS',
+export const loadArticleFailure = createAction(
+  '[Articles Service] LOAD_ARTICLE_FAILURE',
+  props<{ error: any }>()
+);
 
-  ArticleCreateRequested = '[Articles List] ARTICLE_CREATE_REQUESTED',
-  ArticleCreateSuccess = '[Articles Service] ARTICLE_CREATE_SUCCESS',
-  ArticleCreateFailure = '[Articles Service] ARTICLE_CREATE_FAILURE',
+export const loadArticlesListRequested = createAction(
+  '[Articles List] LOAD_ARTICLES_LIST_REQUESTED'
+);
 
-  ArticleUpdateRequested = '[Articles List] ARTICLE_UPDATE_REQUESTED',
-  ArticleUpdateSuccess = '[Articles Service] ARTICLE_UPDATE_SUCCESS',
-  ArticleUpdateFailure = '[Articles Service] ARTICLE_UPDATE_FAILURE',
+export const loadArticlesListSuccess = createAction(
+  '[Articles Service] LOAD_ARTICLES_LIST_SUCCESS',
+  props<{ data: GridData<Article> }>()
+);
 
-  ArticleDeleteRequested = '[Articles List] ARTICLE_DELETE_REQUESTED',
-  ArticleDeleteSuccess = '[Articles Service] ARTICLE_DELETE_SUCCESS',
-  ArticleDeleteFailure = '[Articles Service] ARTICLE_DELETE_FAILURE'
-}
+export const loadArticlesListFailure = createAction(
+  '[Articles Service] LOAD_ARTICLES_LIST_FAILURE',
+  props<{ error: any }>()
+);
 
-export class LoadArticleRequested implements Action {
-  readonly type = ArticlesActionTypes.LoadArticleRequested;
+export const updateArticlesListPageOptions = createAction(
+  '[Articles Service] UPDATE_ARTICLES_LIST_PAGE_OPTIONS',
+  props<{ size?: number; index?: number }>()
+);
 
-  constructor (public payload: { articleId: string }) {}
-}
+export const articleCreateRequested = createAction(
+  '[Articles List] ARTICLE_CREATE_REQUESTED',
+  props<{ article: Article }>()
+);
 
-export class LoadArticleSuccess implements Action {
-  readonly type = ArticlesActionTypes.LoadArticleSuccess;
+export const articleCreateSuccess = createAction(
+  '[Articles Service] ARTICLE_CREATE_SUCCESS',
+  props<{ article: Article }>()
+);
 
-  constructor (public payload: { article: Article }) {}
-}
+export const articleCreateFailure = createAction(
+  '[Articles Service] ARTICLE_CREATE_FAILURE',
+  props<{ error: any }>()
+);
 
-export class LoadArticleFailure implements Action {
-  readonly type = ArticlesActionTypes.LoadArticleFailure;
+export const articleUpdateRequested = createAction(
+  '[Articles List] ARTICLE_UPDATE_REQUESTED',
+  props<{ article: Article }>()
+);
 
-  constructor (public payload: { error: any }) {}
-}
+export const articleUpdateSuccess = createAction(
+  '[Articles Service] ARTICLE_UPDATE_SUCCESS',
+  props<{ article: Update<Article> }>()
+);
 
-export class LoadArticlesListRequested implements Action {
-  readonly type = ArticlesActionTypes.LoadArticlesListRequested;
-}
+export const articleUpdateFailure = createAction(
+  '[Articles Service] ARTICLE_UPDATE_FAILURE',
+  props<{ error: any }>()
+);
 
-export class LoadArticlesListSuccess implements Action {
-  readonly type = ArticlesActionTypes.LoadArticlesListSuccess;
+export const articleDeleteRequested = createAction(
+  '[Articles List] ARTICLE_DELETE_REQUESTED',
+  props<{ articleId: string }>()
+);
 
-  constructor (public payload: { data: GridData<Article> }) {}
-}
+export const articleDeleteSuccess = createAction(
+  '[Articles Service] ARTICLE_DELETE_SUCCESS',
+  props<{ article: Article }>()
+);
 
-export class LoadArticlesListFailure implements Action {
-  readonly type = ArticlesActionTypes.LoadArticlesListFailure;
-
-  constructor (public payload: { error: any }) {}
-}
-
-export class UpdateArticlesListPageOptions implements Action {
-  readonly type = ArticlesActionTypes.UpdateArticlesListPageOptions;
-
-  constructor (public payload: { size?: number, index?: number }) {}
-}
-
-export class ArticleCreateRequested implements Action {
-  readonly type = ArticlesActionTypes.ArticleCreateRequested;
-
-  constructor (public payload: { article: Article }) {}
-}
-
-export class ArticleCreateSuccess implements Action {
-  readonly type = ArticlesActionTypes.ArticleCreateSuccess;
-
-  constructor (public payload: { article: Article}) {}
-}
-
-export class ArticleCreateFailure implements Action {
-  readonly type = ArticlesActionTypes.ArticleCreateFailure;
-
-  constructor (public payload: { error: any }) {}
-}
-
-export class ArticleUpdateRequested implements Action {
-  readonly type = ArticlesActionTypes.ArticleUpdateRequested;
-
-  constructor (public payload: { article: Article }) {}
-}
-
-export class ArticleUpdateSuccess implements Action {
-  readonly type = ArticlesActionTypes.ArticleUpdateSuccess;
-
-  constructor (public payload: { article: Update<Article> }) {}
-}
-
-export class ArticleUpdateFailure implements Action {
-  readonly type = ArticlesActionTypes.ArticleUpdateFailure;
-
-  constructor (public payload: { error: any }) {}
-}
-
-export class ArticleDeleteRequested implements Action {
-  readonly type = ArticlesActionTypes.ArticleDeleteRequested;
-
-  constructor (public payload: { articleId: string }) {}
-}
-
-export class ArticleDeleteSuccess implements Action {
-  readonly type = ArticlesActionTypes.ArticleDeleteSuccess;
-
-  constructor (public payload: { article: Article }) {}
-}
-
-export class ArticleDeleteFailure implements Action {
-  readonly type = ArticlesActionTypes.ArticleDeleteFailure;
-
-  constructor (public payload: { error: any }) {}
-}
-
-export type ArticlesActions =
-  LoadArticleRequested |
-  LoadArticleSuccess |
-  LoadArticleFailure |
-  LoadArticlesListRequested |
-  LoadArticlesListSuccess |
-  LoadArticlesListFailure |
-  UpdateArticlesListPageOptions |
-  ArticleCreateRequested |
-  ArticleCreateSuccess |
-  ArticleCreateFailure |
-  ArticleUpdateRequested |
-  ArticleUpdateSuccess |
-  ArticleUpdateFailure |
-  ArticleDeleteRequested |
-  ArticleDeleteSuccess |
-  ArticleDeleteFailure;
+export const articleDeleteFailure = createAction(
+  '[Articles Service] ARTICLE_DELETE_FAILURE',
+  props<{ error: any }>()
+);

@@ -27,6 +27,6 @@ export class ArticlesResolver implements Resolve<boolean> {
   }
 
   initRequest() {
-    this.store.dispatch(new ArticlesActions.LoadArticlesListRequested());
+    this.store.dispatch(ArticlesActions.loadArticlesListRequested());
   }
 }

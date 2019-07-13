@@ -64,7 +64,7 @@ export class ArticleListComponent implements OnInit {
 
   paginate(page: number) {
     this.store.dispatch(
-      new ArticlesActions.UpdateArticlesListPageOptions({ index: page })
+      ArticlesActions.updateArticlesListPageOptions({ index: page })
     );
   }
 
@@ -106,13 +106,13 @@ export class ArticleListComponent implements OnInit {
   editArticle(article: Article): void {
     if (article._id) {
       this.store.dispatch(
-        new ArticlesActions.ArticleUpdateRequested({
+        ArticlesActions.articleUpdateRequested({
           article: article
         })
       );
     } else {
       this.store.dispatch(
-        new ArticlesActions.ArticleCreateRequested({
+        ArticlesActions.articleCreateRequested({
           article: article
         })
       );
@@ -121,7 +121,7 @@ export class ArticleListComponent implements OnInit {
 
   onDelete(article: Article) {
     this.store.dispatch(
-      new ArticlesActions.ArticleDeleteRequested({
+      ArticlesActions.articleDeleteRequested({
         articleId: article._id
       })
     );

@@ -1,52 +1,52 @@
 import { ArticlesState, adapter, initialState } from './articles.state';
-import { ArticlesActions, ArticlesActionTypes } from './articles.actions';
+import * as ArticlesActions from './articles.actions';
+
 import { Article } from '@app/articles/models/article.model';
+import { createReducer, on } from '@ngrx/store';
 
-export function articlesReducer(
-  state: ArticlesState = initialState,
-  action: ArticlesActions
-): ArticlesState {
-  switch (action.type) {
+export const articlesReducer = createReducer(
+  initialState,
 
-    case ArticlesActionTypes.LoadArticleSuccess:
-      return adapter.addOne(action.payload.article, state);
+  on(ArticlesActions.loadArticleSuccess, (state, { article }) => {
+    return adapter.addOne(article, state);
+  }),
 
-    case ArticlesActionTypes.LoadArticleFailure:
-      return {
-        ...state,
-        loaded: true,
-        error: action.payload.error
-      };
+  on(ArticlesActions.loadArticleFailure, (state, { error }) => ({
+    ...state,
+    loaded: true,
+    error
+  })),
 
-    case ArticlesActionTypes.UpdateArticlesListPageOptions:
-      return {
-        ...state,
-        pageIndex: action.payload.index ? action.payload.index : state.pageIndex,
-        pageSize: action.payload.size ? action.payload.size : state.pageSize
-      };
+  on(
+    ArticlesActions.updateArticlesListPageOptions,
+    (state, { size, index }) => ({
+      ...state,
+      pageIndex: index ? index : state.pageIndex,
+      pageSize: size ? size : state.pageSize
+    })
+  ),
 
-    case ArticlesActionTypes.LoadArticlesListSuccess:
-      adapter.removeAll({
-        ...state,
-        loaded: false
-      });
-      return adapter.addAll(action.payload.data.data, {
-        ...state,
-        collectionSize: action.payload.data.collectionSize,
-        loaded: true
-      });
+  on(ArticlesActions.loadArticlesListSuccess, (state, { data }) => {
+    adapter.removeAll({
+      ...state,
+      loaded: false
+    });
+    return adapter.addAll(data.data, {
+      ...state,
+      collectionSize: data.collectionSize,
+      loaded: true
+    });
+  }),
 
-    case ArticlesActionTypes.LoadArticlesListFailure:
-    case ArticlesActionTypes.ArticleCreateFailure:
-    case ArticlesActionTypes.ArticleUpdateFailure:
-    case ArticlesActionTypes.ArticleDeleteFailure:
-      return {
-        ...state,
-        loaded: true,
-        error: action.payload.error
-      };
-
-    default:
-      return state;
-  }
-}
+  on(
+    ArticlesActions.loadArticleFailure,
+    ArticlesActions.articleCreateFailure,
+    ArticlesActions.articleUpdateFailure,
+    ArticlesActions.articleDeleteFailure,
+    (state, { error }) => ({
+      ...state,
+      loaded: true,
+      error
+    })
+  )
+);

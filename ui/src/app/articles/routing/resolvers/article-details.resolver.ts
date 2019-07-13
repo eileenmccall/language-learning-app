@@ -28,7 +28,7 @@ export class ArticleDetailsResolver implements Resolve<Article> {
         tap((article: Article) => {
           if (!article) {
             this.store.dispatch(
-              new ArticlesActions.LoadArticleRequested({ articleId: id })
+              ArticlesActions.loadArticleRequested({ articleId: id })
             );
           }
         })
