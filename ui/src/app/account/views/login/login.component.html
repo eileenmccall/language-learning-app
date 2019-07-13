@@ -1,22 +1,38 @@
-<div fxFlexFill class="body text-center">
+<div class="body text-center">
   <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
   <form class="form-signin" [formGroup]="form">
     <div class="form-group">
       <label for="inputEmail" class="sr-only">Email address</label>
-      <input formControlName="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+      <input
+        formControlName="email"
+        type="email"
+        id="inputEmail"
+        class="form-control"
+        placeholder="Email address"
+        required
+      />
     </div>
     <div class="form-group">
       <label for="inputPassword" class="sr-only">Password</label>
-      <input formControlName="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+      <input
+        formControlName="password"
+        type="password"
+        id="inputPassword"
+        class="form-control"
+        placeholder="Password"
+        required
+      />
     </div>
     <a [routerLink]="['../forgot']">Forgot password?</a>
     <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
+      <label> <input type="checkbox" value="remember-me" /> Remember me </label>
     </div>
     <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
   </form>
-  <button class="btn btn-lg btn-primary btn-block" (click)="login()">Sign in</button>
-  <button class="btn btn-lg btn-secondary btn-block" (click)="toRegister()">Register</button>
+  <button class="btn btn-lg btn-primary btn-block" (click)="login()">
+    Sign in
+  </button>
+  <button class="btn btn-lg btn-secondary btn-block" (click)="toRegister()">
+    Register
+  </button>
 </div>

@@ -1,10 +1,18 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class BasicInterceptor implements HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     if (req.url.includes('/auth/login')) {
       localStorage.removeItem('token');
 
@@ -12,8 +20,8 @@ export class BasicInterceptor implements HttpInterceptor {
 
       req = req.clone({
         setHeaders: {
-          'Authorization': `Basic ${authString}`
-        },
+          Authorization: `Basic ${authString}`
+        }
       });
 
       return next.handle(req);

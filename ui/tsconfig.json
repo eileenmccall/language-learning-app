@@ -8,36 +8,20 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
+    "module": "esnext",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "paths": {
-      "@app/*": [
-        "src/app/*"
-      ],
-      "@app/core/*": [
-        "src/app/core/*"
-      ],
-      "@app/shared/*": [
-        "src/app/shared/*"
-      ],
-      "@app/routing/*": [
-        "src/app/routing/*"
-      ],
-      "@app/views/*": [
-        "src/app/views/*"
-      ],
-      "@env/*": [
-        "src/environments/*"
-      ]
+      "@app/*": ["src/app/*"],
+      "@app/core/*": ["src/app/core/*"],
+      "@app/shared/*": ["src/app/shared/*"],
+      "@app/routing/*": ["src/app/routing/*"],
+      "@app/views/*": ["src/app/views/*"],
+      "@env/*": ["src/environments/*"]
     },
     "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ]
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"]
   }
 }

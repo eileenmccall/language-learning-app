@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 COPY ./ui/package.json /usr/src/app
 
-RUN npm install
+RUN npm install -f --no-optional
 
 COPY ./ui/angular.json /usr/src/app
 COPY ./ui/tsconfig.json /usr/src/app
