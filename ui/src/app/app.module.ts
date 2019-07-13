@@ -15,7 +15,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { environment } from '@env/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { storeFreeze } from 'ngrx-store-freeze';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
     StoreModule.forRoot({
       router: routerReducer
     }, {
-      metaReducers: !environment.production ? [storeFreeze] : []
+      metaReducers: !environment.production ? [] : [], runtimeChecks: { strictStateImmutability: true, strictActionImmutability: true }
     }),
     EffectsModule.forRoot([]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
