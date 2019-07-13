@@ -16,8 +16,7 @@
       "@app/*": ["src/app/*"],
       "@app/core/*": ["src/app/core/*"],
       "@app/shared/*": ["src/app/shared/*"],
-      "@app/routing/*": ["src/app/routing/*"],
-      "@app/views/*": ["src/app/views/*"],
+      "@app/layout/*": ["src/app/layout/*"],
       "@env/*": ["src/environments/*"]
     },
     "target": "es5",

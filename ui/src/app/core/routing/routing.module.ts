@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from './guards/auth-guard.service';
-import { PageNotFoundComponent } from '../shared/components/page-not-found/page-not-found.component';
-import { SharedModule } from '../shared/shared.module';
-import { PublicModule } from '../public/public.module';
+import { PageNotFoundComponent } from '@app/shared/components/page-not-found/page-not-found.component';
+import { SharedModule } from '@app/shared/shared.module';
+import { PublicModule } from '@app/public/public.module';
 import { RoleGuardService } from './guards/role-guard.service';
 
 const routes: Routes = [
@@ -18,12 +18,12 @@ const routes: Routes = [
       role: 'admin'
     },
     loadChildren: () =>
-      import('../articles/articles.module').then(m => m.ArticlesModule)
+      import('@app/articles/articles.module').then(m => m.ArticlesModule)
   },
   {
     path: 'account',
     loadChildren: () =>
-      import('../account/account.module').then(m => m.AccountModule)
+      import('@app/account/account.module').then(m => m.AccountModule)
   },
   {
     path: '**',

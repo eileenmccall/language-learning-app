@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { AppState, AuthSelectors } from './store';
+import { AppState, AuthSelectors } from '@app/core/store';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import { AppState, AuthSelectors } from './store';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor (private store: Store<AppState.State>) { }
+  constructor(private store: Store<AppState.State>) {}
 
   title = 'app';
 

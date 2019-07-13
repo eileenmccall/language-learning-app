@@ -20,6 +20,7 @@ import { ArticleDetailsComponent } from './views/article-details/article-details
 import { ArticleDetailsResolver } from './routing/resolvers/article-details.resolver';
 import { ArticlesComponent } from './views/articles/articles.component';
 import { ArticlesResolver } from './routing/resolvers/articles.resolver';
+import { ArticlesStoreModule } from './store';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ArticlesResolver } from './routing/resolvers/articles.resolver';
     NgbModule,
     LayoutModule,
     SharedModule,
-    ArticlesRoutes
+    ArticlesRoutes,
+    ArticlesStoreModule
   ],
   providers: [
     ArticlesService,
