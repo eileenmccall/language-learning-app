@@ -1,0 +1,5 @@
+@import 'variables';
+
+$theme-colors: (primary: $primary, secondary: $accent);
+
+@import '../../node_modules/bootstrap/scss/bootstrap';
