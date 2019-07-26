@@ -26,6 +26,11 @@ const routes: Routes = [
       import('@app/account/account.module').then(m => m.AccountModule)
   },
   {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('@app/dashboard/dashboard.module').then(m => m.DashboardModule)
+  },
+  {
     path: '**',
     component: PageNotFoundComponent
   }

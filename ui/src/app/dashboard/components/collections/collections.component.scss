@@ -1,0 +1,17 @@
+.title {
+  display: flex;
+  align-items: center;
+
+  &__text {
+    margin: 0 15px;
+    text-align: center;
+  }
+
+  &__divider {
+    flex-grow: 1;
+  }
+}
+
+.collections {
+  display: flex;
+}

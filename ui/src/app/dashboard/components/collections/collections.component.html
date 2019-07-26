@@ -1,0 +1,19 @@
+<div class="title">
+  <hr class="title__divider" />
+  <h3 class="title__text">Collections</h3>
+  <hr class="title__divider" />
+</div>
+
+<div class="collections">
+  <div
+    class="collections__card card"
+    style="width: 18rem;"
+    *ngFor="let collection of collections | async"
+  >
+    <div class="card-body">
+      <h5 class="card-title">{{ collection.name }}</h5>
+      <p class="card-text">{{ collection.description }}</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+</div>
